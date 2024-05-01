@@ -1,0 +1,14 @@
+{
+  "name": "NorthWave - Pay",
+  "short_name": "NorthWave Pay",
+  "icons": [
+    {
+      "src": "/logos/logo_text_dark_trans.png",
+      "sizes": "120x120",
+      "type": "image/png"
+    }
+  ],
+  "theme_color": "#346BC8",
+  "background_color": "#346BC8",
+  "display": "standalone"
+}
