@@ -35,7 +35,7 @@ const useFireAuth = () => {
   };
 
   const signIn = async (email, password) =>
-    await signInWithEmailAndPassword(auth, email, password);
+    await signInWithEmailAndPassword(auth, email, password)
 
   const signUp = async (email, password) =>
     await createUserWithEmailAndPassword(auth, email, password);

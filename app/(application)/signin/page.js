@@ -48,7 +48,8 @@ const Signin = () => {
     setIsLoading(true);
 
     await signIn(email, password)
-      .then(() => {
+      .then((me) => {
+        console.log(me);
         Cookies.set("PayNWSignedIn", true, {
           expires: 14,
         });

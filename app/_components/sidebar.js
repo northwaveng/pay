@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import logo from "@/public/logos/logo_text_trans.png";
+import logo from "@/public/logos/logo_text_dark_trans.png";
 import {
   ArrowDown2,
   ArrowUp2,
@@ -44,10 +44,10 @@ const Siderbar = ({ state = "dashboard" }) => {
 
   useEffect(() => {
     if (authUser) {
-      const userRef = doc(db, "admins", authUser.email);
+      const userRef = doc(db, "users", authUser.email);
       const unsubscribe = onSnapshot(userRef, (doc) => {
         if (doc.exists()) setUser(doc.data());
-        else toast.error("Customer not found");
+        else toast.error("Account not found");
       });
       return () => unsubscribe();
     }
@@ -63,10 +63,10 @@ const Siderbar = ({ state = "dashboard" }) => {
             href="/"
             className="fw-bold text-decoration-none text-dark"
           >
-            <Image src={logo} width={150} priority alt="logo" />
+            <Image src={logo} width={50} priority alt="logo" />
           </Link>
         </div>
-{/* 
+        {/* 
         <ul className="sidebar-child">
           <li>
             <Link
@@ -587,8 +587,9 @@ const Siderbar = ({ state = "dashboard" }) => {
         <button
           onClick={logOut}
           className="btn-dash sidebar-user-btn rounded-2"
+          style={{ margin: "0 20px 20px 20px" }}
         >
-          <Logout variant="Bold" className="me-2" />
+          <Logout variant="Bold" color="#346BC8" className="me-2" />
           Sign Out
         </button>
       )}
