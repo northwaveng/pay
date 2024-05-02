@@ -22,8 +22,12 @@ import { doc, onSnapshot } from "firebase/firestore";
 import { db } from "@/app/_components/firebase/fire_config";
 import { usePathname } from "next/navigation";
 import { toast } from "react-toastify";
+import { useMediaQuery } from "@chakra-ui/react";
 
 const Siderbar = ({ state = "dashboard" }) => {
+  const [isTablet] = useMediaQuery("(max-width: 767.98px)");
+  const [isMobile] = useMediaQuery("(max-width: 575.98px)");
+
   const [openOrder, setOpenOrder] = useState(state === "order" || false);
   const [openCustomer, setOpenCustomer] = useState(
     state === "customer" || false
@@ -56,14 +60,14 @@ const Siderbar = ({ state = "dashboard" }) => {
   return (
     <div className="sidebar">
       <div className="sidebar-menu">
-        <div className="sidebar-header">
+        <div className={`sidebar-header ${isMobile ? "text-center" : ""}`}>
           <Link
             scroll
             replace
             href="/"
             className="fw-bold text-decoration-none text-dark"
           >
-            <Image src={logo} width={50} priority alt="logo" />
+            <Image src={logo} width={isMobile ? 25 : 50} priority alt="logo" />
           </Link>
         </div>
         {/* 
@@ -587,10 +591,10 @@ const Siderbar = ({ state = "dashboard" }) => {
         <button
           onClick={logOut}
           className="btn-dash sidebar-user-btn rounded-2"
-          style={{ margin: "0 20px 20px 20px" }}
+          style={{ margin: isTablet ? "0 10px 10px 10px" : "0 20px 20px 20px" }}
         >
           <Logout variant="Bold" color="#346BC8" className="me-2" />
-          Sign Out
+          {isTablet ? "" : "Sign Out"}
         </button>
       )}
     </div>

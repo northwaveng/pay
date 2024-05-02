@@ -17,7 +17,7 @@ export default function NeedAuth() {
           <h4 className="mt-5">You need to be signed in to see this page!</h4>
 
           <div className="d-flex justify-content-center mt-4">
-            <Link href="/signin" className="btn-dash btn-dark">
+            <Link href="/signin" className="btn-dash btn-primary">
               Sign In
             </Link>
           </div>

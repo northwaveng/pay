@@ -32,8 +32,8 @@ const Signin = () => {
               <hr />
 
               <div className="d-flex justify-content-center">
-                <Link href="/" className="btn-dash btn-dark w-50">
-                  Al Gendini!
+                <Link href="/" className="btn-dash btn-primary w-50">
+                  Northwave Pay
                 </Link>
               </div>
             </div>
@@ -48,8 +48,7 @@ const Signin = () => {
     setIsLoading(true);
 
     await signIn(email, password)
-      .then((me) => {
-        console.log(me);
+      .then(() => {
         Cookies.set("PayNWSignedIn", true, {
           expires: 14,
         });
