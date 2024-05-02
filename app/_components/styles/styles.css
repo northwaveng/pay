@@ -524,6 +524,18 @@ input[type="file"]::file-selector-button {
     width: calc(100% - 140px);
     margin-left: 140px;
   }
+
+  .dash-body {
+    width: calc(100% - 140px);
+  }
+
+  .dash-header {
+    width: calc(100% - 140px);
+  }
+
+  .search-dash {
+    width: 140px;
+  }
 }
 
 @media (max-width: 576px) {
@@ -532,9 +544,22 @@ input[type="file"]::file-selector-button {
     margin-left: 20%;
   }
 
+  .dash-body {
+    width: 80%;
+    height: calc(100vh - 12rem);
+  }
+
+  .dash-header {
+    width: 80%;
+  }
+
   .dashboard-others {
     width: 100px;
     height: 100px;
+  }
+
+  .search-dash {
+    width: 100%;
   }
 }
 
