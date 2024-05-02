@@ -317,18 +317,6 @@ input[type="file"]::file-selector-button {
   justify-content: space-between;
 }
 
-@media (max-width: 767.98px) {
-  .sidebar {
-    width: 140px;
-  }
-}
-
-@media (max-width: 575.98px) {
-  .sidebar {
-    width: 20%;
-  }
-}
-
 .sidebar-menu {
   height: calc(100vh - 100px);
 }
@@ -340,7 +328,7 @@ input[type="file"]::file-selector-button {
 
 .sidebar-child {
   list-style: none;
-  padding: 0;
+  padding: 0 20px 20px 20px;
   text-decoration: none;
   font-size: 14px;
   overflow-y: scroll;
@@ -355,11 +343,10 @@ input[type="file"]::file-selector-button {
   color: #808080;
   border: none;
   display: flex;
-  height: 32px;
+  height: 42px;
   padding: 4px 0px;
   padding-right: 10px;
-
-  margin: 15px 0;
+  margin: 20px 0;
   justify-content: space-between;
   align-items: center;
   flex-shrink: 0;
@@ -390,7 +377,7 @@ input[type="file"]::file-selector-button {
 
 .sidebar-child-btn:hover,
 .sidebar-grand-child-btn:hover {
-  color: #000;
+  color: #346bc8;
 }
 
 .sidebar-user-btn {
@@ -409,6 +396,29 @@ input[type="file"]::file-selector-button {
 .sidebar-user-btn:hover,
 .sidebar-user-btn:focus {
   background-color: #e6e6e6 !important;
+}
+
+@media (max-width: 768px) {
+  .sidebar {
+    width: 140px;
+  }
+
+  .sidebar-child-btn {
+    padding: 0;
+    display: block;
+    text-align: center;
+  }
+}
+
+@media (max-width: 576px) {
+  .sidebar {
+    width: 20%;
+  }
+
+  .sidebar-child {
+    text-align: center;
+    padding: 0 10px 10px 10px;
+  }
 }
 
 /* scrollbar */
@@ -446,10 +456,8 @@ input[type="file"]::file-selector-button {
 }
 
 .dashboard-others {
-  width: 125px !important;
-  height: 125px !important;
-  display: flex;
-  flex-direction: column;
+  width: 125px;
+  height: 125px;
   justify-content: center;
   align-items: center;
   text-decoration: none;
@@ -509,6 +517,25 @@ input[type="file"]::file-selector-button {
 
 .thead-dash th {
   vertical-align: middle;
+}
+
+@media (max-width: 768px) {
+  .content {
+    width: calc(100% - 140px);
+    margin-left: 140px;
+  }
+}
+
+@media (max-width: 576px) {
+  .content {
+    width: 80%;
+    margin-left: 20%;
+  }
+
+  .dashboard-others {
+    width: 100px;
+    height: 100px;
+  }
 }
 
 .pe-active {

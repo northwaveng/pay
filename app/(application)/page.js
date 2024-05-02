@@ -5,7 +5,7 @@ import { useEffect } from "react";
 import { useAuth } from "@/app/_components/firebase/fire_auth_context";
 import { useRouter } from "next/navigation";
 import Loader from "@/app/_components/loader";
-// import Dashboard from "@/app/_components/dashboard/dashboard";
+import Dashboard from "@/app/_components/dashboard/dashboard";
 
 const Pay = () => {
   const { loading, authUser } = useAuth();
@@ -22,7 +22,7 @@ const Pay = () => {
     return (
       <>
         <Siderbar />
-        {/* <Dashboard /> */}
+        <Dashboard />
       </>
     );
   }
