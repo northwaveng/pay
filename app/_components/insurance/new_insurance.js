@@ -93,7 +93,7 @@ const NewInsurance = ({ newInsurance, onHide }) => {
                   type="text"
                   required
                   className="form-control cus-form-control rounded-2"
-                  id="insureType"
+                  id="type"
                   placeholder="eg: private"
                   onChange={(e) => setType(e.target.value)}
                 />

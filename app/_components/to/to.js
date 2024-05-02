@@ -1,41 +1,50 @@
 "use client";
 
 import { AddCircle, ArrowDown2, ArrowUp2, Trash } from "iconsax-react";
-import SearchInsurance from "@/app/_components/insurance/search_insurance";
+import SearchTo from "@/app/_components/to/search_to";
 import { truncate } from "@/app/_utils/truncate";
 import capitalize from "@/app/_utils/capitalize";
 import { useEffect, useState } from "react";
-import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import {
+  collection,
+  onSnapshot,
+  orderBy,
+  query,
+  where,
+} from "firebase/firestore";
 import { db } from "@/app/_components/firebase/fire_config";
 import Loader from "@/app/_components/loader";
 import { formatTimestamp } from "@/app/_utils/format_timestamp";
 import getFieldName from "@/app/_utils/get_field_name";
 import { useMediaQuery } from "@chakra-ui/react";
 
-const Insurance = ({ selectedInsurance, newInsurance }) => {
+const To = ({ selectedTo, newTo }) => {
   const [isMobile] = useMediaQuery("(max-width: 576px)");
-  const [isLoadingInsurance, setIsLoadingInsurance] = useState(true);
-  const [insurances, setInsurances] = useState([]);
-  const [totalInsurances, setTotalInsurances] = useState(0);
-  const [sortedInsurances, setSortedInsurances] = useState([]);
+  const [isLoadingTo, setIsLoadingTo] = useState(true);
+  const [tos, setTos] = useState([]);
+  const [totalTos, setTotalTos] = useState(0);
+  const [sortedTos, setSortedTos] = useState([]);
   const [sortingBtn, setSortingBtn] = useState("");
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
-      query(collection(db, "insurances"), orderBy("createdOn")),
+      query(
+        collection(db, "users"),
+        where("isTaxOfficer", "==", true),
+        orderBy("createdOn")
+      ),
       (snap) => {
-        setIsLoadingInsurance(false);
-        setInsurances(snap.docs.map((doc) => doc.data()));
-        setTotalInsurances(snap.size);
+        setIsLoadingTo(false);
+        setTos(snap.docs.map((doc) => doc.data()));
+        setTotalTos(snap.size);
       }
     );
 
     return () => unsubscribe();
   }, []);
 
-  const changeSortingInsurance = (field, isAsc) => {
-    const dataToSort =
-      sortedInsurances.length > 0 ? [...sortedInsurances] : [...insurances];
+  const changeSortingTo = (field, isAsc) => {
+    const dataToSort = sortedTos.length > 0 ? [...sortedTos] : [...tos];
 
     const sorted = dataToSort.sort((_a, _b) => {
       const a = getFieldName(_a, field);
@@ -44,23 +53,21 @@ const Insurance = ({ selectedInsurance, newInsurance }) => {
       return isAsc ? a - b : b - a;
     });
 
-    setSortedInsurances(sorted);
+    setSortedTos(sorted);
     setSortingBtn(`${field}${isAsc}`);
   };
 
   const renderTableRow = (insure, index) => (
-    <tr
-      key={index}
-      className="pe-active"
-      onClick={() => selectedInsurance(insure)}
-    >
+    <tr key={index} className="pe-active" onClick={() => selectedTo(insure)}>
       <td className="align-middle">{capitalize(truncate(insure.name, 30))}</td>
-      <td className="align-middle">{capitalize(insure.type)}</td>
+      <td className="align-middle">{capitalize(insure.phoneNumber)}</td>
+      <td className="align-middle">{capitalize(insure.location)}</td>
+      <td className="align-middle">{truncate(insure.email, 30)}</td>
       <td className="align-middle">{formatTimestamp(insure.createdOn)}</td>
     </tr>
   );
 
-  const handleSelectedInsurance = (insure) => selectedInsurance(insure);
+  const handleSelectedTo = (to) => selectedTo(to);
 
   return (
     <div className="content overflow-none">
@@ -77,25 +84,23 @@ const Insurance = ({ selectedInsurance, newInsurance }) => {
               }`}
             >
               <div className="d-flex justify-content-between align-items-center">
-                <h4 className="fw-semibold m-0">Insurance Type</h4>
+                <h4 className="fw-semibold m-0">Tax Officers</h4>
                 <small className="badge fw-normal py-1 px-2 m-0 rounded-1 alert alert-primary ms-2">
-                  {totalInsurances}
+                  {totalTos}
                 </small>
               </div>
 
               <div className={`d-flex ${isMobile ? "mt-3 flex-column" : ""}`}>
-                <SearchInsurance
-                  selectedSearchInsurance={handleSelectedInsurance}
-                />
+                <SearchTo selectedSearchTo={handleSelectedTo} />
 
                 <button
-                  onClick={() => newInsurance(true)}
+                  onClick={() => newTo(true)}
                   className={`btn-dash btn-primary border-0 ${
                     isMobile ? "mt-2 w-100" : ""
                   }`}
                 >
                   <AddCircle size={20} />
-                  New Insurance
+                  New Tax Officer
                 </button>
               </div>
             </div>
@@ -103,36 +108,36 @@ const Insurance = ({ selectedInsurance, newInsurance }) => {
             <hr className="mb-0" />
           </div>
 
-          {isLoadingInsurance && insurances.length === 0 && (
+          {isLoadingTo && tos.length === 0 && (
             <div className="col-md-12 dash-body d-flex justify-content-center">
               <Loader />
             </div>
           )}
 
-          {!isLoadingInsurance && insurances.length === 0 && (
+          {!isLoadingTo && tos.length === 0 && (
             <div className="col-md-12 dash-body text-muted text-center">
               <Trash size={100} variant="Bold" />
-              <p className="mt-4 mb-0">No insurances yet</p>
+              <p className="mt-4 mb-0">No tax officers yet</p>
             </div>
           )}
 
-          {!isLoadingInsurance && insurances.length > 0 && (
+          {!isLoadingTo && tos.length > 0 && (
             <div className="col-md-12 dash-body px-4 py-0 pb-5">
               <div className="table-responsive ">
                 <table className="table table-hover">
                   <thead>
                     <tr className="thead-dash">
                       <th scope="col">Name</th>
-                      <th scope="col">Type</th>
+                      <th scope="col">Phone Number</th>
+                      <th scope="col">Location</th>
+                      <th scope="col">Email</th>
                       <th scope="col">
                         <div className="d-flex align-items-center">
                           Created On
                           <div className="d-flex flex-column ms-1">
                             <ArrowUp2
                               size={12}
-                              onClick={() =>
-                                changeSortingInsurance("createdOn", true)
-                              }
+                              onClick={() => changeSortingTo("createdOn", true)}
                               className={
                                 sortingBtn === `createdOn${true}`
                                   ? "text-text pe-active"
@@ -142,7 +147,7 @@ const Insurance = ({ selectedInsurance, newInsurance }) => {
                             <ArrowDown2
                               size={12}
                               onClick={() =>
-                                changeSortingInsurance("createdOn", false)
+                                changeSortingTo("createdOn", false)
                               }
                               className={
                                 sortingBtn === `createdOn${false}`
@@ -157,10 +162,9 @@ const Insurance = ({ selectedInsurance, newInsurance }) => {
                   </thead>
 
                   <tbody>
-                    {(sortedInsurances.length > 0
-                      ? sortedInsurances
-                      : insurances
-                    ).map((insure, index) => renderTableRow(insure, index))}
+                    {(sortedTos.length > 0 ? sortedTos : tos).map(
+                      (insure, index) => renderTableRow(insure, index)
+                    )}
                   </tbody>
                 </table>
               </div>
@@ -172,4 +176,4 @@ const Insurance = ({ selectedInsurance, newInsurance }) => {
   );
 };
 
-export default Insurance;
+export default To;

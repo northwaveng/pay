@@ -35,7 +35,7 @@ const Dashboard = () => {
     const collRef = collection(db, "users");
 
     const unsubscribe = onSnapshot(
-      query(collRef, where("taxOfficer", "==", true)),
+      query(collRef, where("isTaxOfficer", "==", true)),
       (snap) => setTotalTo(snap.size)
     );
 
