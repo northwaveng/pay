@@ -1,7 +1,7 @@
 "use client";
 
 import { AddCircle, ArrowDown2, ArrowUp2, Trash } from "iconsax-react";
-import SearchTo from "@/app/_components/to/search_to";
+import SearchTp from "@/app/_components/dashboard/tp/search_tp";
 import { truncate } from "@/app/_utils/truncate";
 import capitalize from "@/app/_utils/capitalize";
 import { useEffect, useState } from "react";
@@ -18,56 +18,56 @@ import { formatTimestamp } from "@/app/_utils/format_timestamp";
 import getFieldName from "@/app/_utils/get_field_name";
 import { useMediaQuery } from "@chakra-ui/react";
 
-const To = ({ selectedTo, newTo }) => {
+const Tp = ({ selectedTp, newTp }) => {
   const [isMobile] = useMediaQuery("(max-width: 576px)");
-  const [isLoadingTo, setIsLoadingTo] = useState(true);
-  const [tos, setTos] = useState([]);
-  const [totalTos, setTotalTos] = useState(0);
-  const [sortedTos, setSortedTos] = useState([]);
+  const [isLoadingTp, setIsLoadingTp] = useState(true);
+  const [tps, setTps] = useState([]);
+  const [totalTps, setTotalTps] = useState(0);
+  const [sortedTps, setSortedTps] = useState([]);
   const [sortingBtn, setSortingBtn] = useState("");
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
       query(
         collection(db, "users"),
-        where("isTaxOfficer", "==", true),
+        where("isTaxPayer", "==", true),
         orderBy("createdOn")
       ),
       (snap) => {
-        setIsLoadingTo(false);
-        setTos(snap.docs.map((doc) => doc.data()));
-        setTotalTos(snap.size);
+        setIsLoadingTp(false);
+        setTps(snap.docs.map((doc) => doc.data()));
+        setTotalTps(snap.size);
       }
     );
 
     return () => unsubscribe();
   }, []);
 
-  const changeSortingTo = (field, isAsc) => {
-    const dataToSort = sortedTos.length > 0 ? [...sortedTos] : [...tos];
+  const changeSortingTp = (field, isAsc) => {
+    const dataTpSort = sortedTps.length > 0 ? [...sortedTps] : [...tps];
 
-    const sorted = dataToSort.sort((_a, _b) => {
+    const sorted = dataTpSort.sort((_a, _b) => {
       const a = getFieldName(_a, field);
       const b = getFieldName(_b, field);
 
       return isAsc ? a - b : b - a;
     });
 
-    setSortedTos(sorted);
+    setSortedTps(sorted);
     setSortingBtn(`${field}${isAsc}`);
   };
 
-  const renderTableRow = (to, index) => (
-    <tr key={index} className="pe-active" onClick={() => selectedTo(to)}>
-      <td className="align-middle">{capitalize(truncate(to.name, 30))}</td>
-      <td className="align-middle">{capitalize(to.phoneNumber)}</td>
-      <td className="align-middle">{capitalize(to.location)}</td>
-      <td className="align-middle">{truncate(to.email, 30)}</td>
-      <td className="align-middle">{formatTimestamp(to.createdOn)}</td>
+  const renderTableRow = (tp, index) => (
+    <tr key={index} className="pe-active" onClick={() => selectedTp(tp)}>
+      <td className="align-middle">{capitalize(truncate(tp.name, 30))}</td>
+      <td className="align-middle">{capitalize(tp.phoneNumber)}</td>
+      <td className="align-middle">{capitalize(tp.lga)}</td>
+      <td className="align-middle">{truncate(tp.location, 30)}</td>
+      <td className="align-middle">{formatTimestamp(tp.createdOn)}</td>
     </tr>
   );
 
-  const handleSelectedTo = (to) => selectedTo(to);
+  const handleSelectedTp = (tp) => selectedTp(tp);
 
   return (
     <div className="content overflow-none">
@@ -84,23 +84,23 @@ const To = ({ selectedTo, newTo }) => {
               }`}
             >
               <div className="d-flex justify-content-between align-items-center">
-                <h4 className="fw-semibold m-0">Tax Officers</h4>
+                <h4 className="fw-semibold m-0">Tax Payers</h4>
                 <small className="badge fw-normal py-1 px-2 m-0 rounded-1 alert alert-primary ms-2">
-                  {totalTos}
+                  {totalTps}
                 </small>
               </div>
 
               <div className={`d-flex ${isMobile ? "mt-3 flex-column" : ""}`}>
-                <SearchTo selectedSearchTo={handleSelectedTo} />
+                <SearchTp selectedSearchTp={handleSelectedTp} />
 
                 <button
-                  onClick={() => newTo(true)}
+                  onClick={() => newTp(true)}
                   className={`btn-dash btn-primary border-0 ${
                     isMobile ? "mt-2 w-100" : ""
                   }`}
                 >
                   <AddCircle size={20} />
-                  New Tax Officer
+                  New Tax Payer
                 </button>
               </div>
             </div>
@@ -108,20 +108,20 @@ const To = ({ selectedTo, newTo }) => {
             <hr className="mb-0" />
           </div>
 
-          {isLoadingTo && tos.length === 0 && (
+          {isLoadingTp && tps.length === 0 && (
             <div className="col-md-12 dash-body d-flex justify-content-center">
               <Loader />
             </div>
           )}
 
-          {!isLoadingTo && tos.length === 0 && (
+          {!isLoadingTp && tps.length === 0 && (
             <div className="col-md-12 dash-body text-muted text-center">
               <Trash size={100} variant="Bold" />
-              <p className="mt-4 mb-0">No tax officers yet</p>
+              <p className="mt-4 mb-0">No tax payers yet</p>
             </div>
           )}
 
-          {!isLoadingTo && tos.length > 0 && (
+          {!isLoadingTp && tps.length > 0 && (
             <div className="col-md-12 dash-body px-4 py-0 pb-5">
               <div className="table-responsive ">
                 <table className="table table-hover">
@@ -133,7 +133,7 @@ const To = ({ selectedTo, newTo }) => {
                           <div className="d-flex flex-column ms-1">
                             <ArrowUp2
                               size={12}
-                              onClick={() => changeSortingTo("name", true)}
+                              onClick={() => changeSortingTp("name", true)}
                               className={
                                 sortingBtn === `name${true}`
                                   ? "text-text pe-active"
@@ -142,7 +142,7 @@ const To = ({ selectedTo, newTo }) => {
                             />
                             <ArrowDown2
                               size={12}
-                              onClick={() => changeSortingTo("name", false)}
+                              onClick={() => changeSortingTp("name", false)}
                               className={
                                 sortingBtn === `name${false}`
                                   ? "text-text pe-active"
@@ -153,15 +153,15 @@ const To = ({ selectedTo, newTo }) => {
                         </div>
                       </th>
                       <th scope="col">Phone Number</th>
-                      <th scope="col">Location</th>
-                      <th scope="col">Email</th>
+                      <th scope="col">LGA</th>
+                      <th scope="col">Address</th>
                       <th scope="col">
                         <div className="d-flex align-items-center">
                           Created On
                           <div className="d-flex flex-column ms-1">
                             <ArrowUp2
                               size={12}
-                              onClick={() => changeSortingTo("createdOn", true)}
+                              onClick={() => changeSortingTp("createdOn", true)}
                               className={
                                 sortingBtn === `createdOn${true}`
                                   ? "text-text pe-active"
@@ -171,7 +171,7 @@ const To = ({ selectedTo, newTo }) => {
                             <ArrowDown2
                               size={12}
                               onClick={() =>
-                                changeSortingTo("createdOn", false)
+                                changeSortingTp("createdOn", false)
                               }
                               className={
                                 sortingBtn === `createdOn${false}`
@@ -186,8 +186,8 @@ const To = ({ selectedTo, newTo }) => {
                   </thead>
 
                   <tbody>
-                    {(sortedTos.length > 0 ? sortedTos : tos).map((to, index) =>
-                      renderTableRow(to, index)
+                    {(sortedTps.length > 0 ? sortedTps : tps).map((tp, index) =>
+                      renderTableRow(tp, index)
                     )}
                   </tbody>
                 </table>
@@ -200,4 +200,4 @@ const To = ({ selectedTo, newTo }) => {
   );
 };
 
-export default To;
+export default Tp;

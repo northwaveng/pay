@@ -102,6 +102,7 @@ const NewInsurance = ({ newInsurance, onHide }) => {
 
             <div className="col-md-12 d-flex justify-content-end my-3">
               <button
+                type="submit"
                 disabled={isLoading}
                 className="btn-dash btn-primary border-0"
               >

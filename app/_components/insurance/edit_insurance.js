@@ -110,6 +110,7 @@ const EditInsurance = ({ insurance, onHide }) => {
               </button>
 
               <button
+                type="submit"
                 disabled={isLoading}
                 className="btn-dash btn-primary border-0"
               >

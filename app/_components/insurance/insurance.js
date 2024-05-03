@@ -122,7 +122,31 @@ const Insurance = ({ selectedInsurance, newInsurance }) => {
                 <table className="table table-hover">
                   <thead>
                     <tr className="thead-dash">
-                      <th scope="col">Name</th>
+                      <th scope="col">
+                        <div className="d-flex align-items-center">
+                          Name
+                          <div className="d-flex flex-column ms-1">
+                            <ArrowUp2
+                              size={12}
+                              onClick={() => changeSortingInsurance("name", true)}
+                              className={
+                                sortingBtn === `name${true}`
+                                  ? "text-text pe-active"
+                                  : "text-muted pe-active"
+                              }
+                            />
+                            <ArrowDown2
+                              size={12}
+                              onClick={() => changeSortingInsurance("name", false)}
+                              className={
+                                sortingBtn === `name${false}`
+                                  ? "text-text pe-active"
+                                  : "text-muted pe-active"
+                              }
+                            />
+                          </div>
+                        </div>
+                      </th>
                       <th scope="col">Type</th>
                       <th scope="col">
                         <div className="d-flex align-items-center">

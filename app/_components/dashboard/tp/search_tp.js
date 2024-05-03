@@ -15,7 +15,7 @@ import { truncate } from "@/app/_utils/truncate";
 import capitalize from "@/app/_utils/capitalize";
 import { useMediaQuery } from "@chakra-ui/react";
 
-const SearchTo = ({ selectedSearchTo }) => {
+const SearchTp = ({ selectedSearchTp }) => {
   const [isMobile] = useMediaQuery("(max-width: 576px)");
   const [searchQ, setSearchQ] = useState("");
   const [searchR, setSearchR] = useState([]);
@@ -31,7 +31,7 @@ const SearchTo = ({ selectedSearchTo }) => {
           collection(db, "users"),
           where("name", ">=", value.toLowerCase()),
           where("name", "<=", value.toLowerCase() + "\uf8ff"),
-          where("isTaxOfficer", "==", true),
+          where("isTaxPayer", "==", true),
           orderBy("name"),
           limit(10)
         ),
@@ -73,7 +73,7 @@ const SearchTo = ({ selectedSearchTo }) => {
 
                       <button
                         onClick={() => {
-                          selectedSearchTo(result);
+                          selectedSearchTp(result);
                           searchRef.current.value = "";
                           setSearchQ("");
                         }}
@@ -106,4 +106,4 @@ const SearchTo = ({ selectedSearchTo }) => {
   );
 };
 
-export default SearchTo;
+export default SearchTp;

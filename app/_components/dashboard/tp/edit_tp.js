@@ -9,35 +9,45 @@ import { toast } from "react-toastify";
 import { deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { db } from "@/app/_components/firebase/fire_config";
 import capitalize from "@/app/_utils/capitalize";
+import * as states from "nigerian-states-and-lgas";
+import ReactSelect from "react-select";
+import { selectFormStyle, selectFormTheme } from "@/app/_utils/input_style";
 
-const EditTo = ({ to, onHide }) => {
-  const [show, setShow] = useState(!!to);
+const EditTp = ({ tp, onHide }) => {
+  const [show, setShow] = useState(!!tp);
   const [isLoading, setIsLoading] = useState(false);
   const [isDeleteLoading, setIsDeleteLoading] = useState(false);
-  const [isStatusLoading, setIsStatusLoading] = useState(false);
   const [name, setName] = useState("");
   const [location, setLocation] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [state, setState] = useState("");
+  const [lga, setLga] = useState("");
   const [nin, setNIN] = useState(null);
   const [driverLicense, setDriverLicense] = useState(null);
+  const [vin, setVin] = useState(null);
+  const [chasis, setChasis] = useState(null);
 
   const onUpdateUser = async (e) => {
     e.preventDefault();
     setIsLoading(true);
 
-    updateDoc(doc(db, "users", to.email), {
-      name: name.length > 0 ? name.toLowerCase() : to.name,
-      location: location.length > 0 ? location.toLowerCase() : to.location,
+    updateDoc(doc(db, "users", tp.email), {
+      name: name.length > 0 ? name.toLowerCase() : tp.name,
+      location: location.length > 0 ? location.toLowerCase() : tp.location,
       phoneNumber:
-        phoneNumber.length > 0 ? phoneNumber.toLowerCase() : to.phoneNumber,
-      nin: nin ? nin.toLowerCase() : to.nin,
+        phoneNumber.length > 0 ? phoneNumber.toLowerCase() : tp.phoneNumber,
+      nin: nin ? nin.toLowerCase() : tp.nin,
       driverLicense: driverLicense
         ? driverLicense.toLowerCase()
-        : to.driverLicense,
+        : tp.driverLicense,
+      vin: vin ? vin.toLowerCase() : tp.vin,
+      chasis: chasis ? chasis.toLowerCase() : tp.chasis,
+      state: state.length > 0 ? state.state.toLowerCase() : tp.state,
+      lga: lga.length > 0 ? lga.toLowerCase() : tp.lga,
     })
       .then(() => {
         handleClose();
-        toast.dark("Tax Officer updated successfully");
+        toast.dark("Tax Payer updated successfully");
       })
       .catch((e) => {
         toast.dark(`Error occured: ${e.message}`, {
@@ -46,13 +56,13 @@ const EditTo = ({ to, onHide }) => {
       });
   };
 
-  const deleteTo = (to) => {
+  const deleteTp = (tp) => {
     setIsDeleteLoading(true);
 
-    deleteDoc(doc(db, "users", to.email))
+    deleteDoc(doc(db, "users", tp.email))
       .then(() => {
         handleClose();
-        toast.dark("Tax Officer deleted successfully");
+        toast.dark("Tax Payer deleted successfully");
       })
       .catch((e) => {
         toast.dark(`Error occured: ${e.message}`, {
@@ -62,42 +72,23 @@ const EditTo = ({ to, onHide }) => {
       .finally((_) => setIsDeleteLoading(false));
   };
 
-  const changeTo = (to) => {
-    setIsStatusLoading(true);
-
-    updateDoc(doc(db, "users", to.email), {
-      isSupervisor: to.isSupervisor ? false : true,
-      isTaxOfficer: to.isTaxOfficer ? false : true,
-    })
-      .then(() => {
-        handleClose();
-        toast.dark("Tax Officer upgraded successfully");
-      })
-      .catch((e) => {
-        toast.dark(`Error occured: ${e.message}`, {
-          className: "text-danger",
-        });
-      })
-      .finally((_) => setIsStatusLoading(false));
-  };
-
   const handleClose = () => {
     setShow(false);
     if (onHide) onHide();
   };
 
   return (
-    <Modal scrollable show={show} onHide={handleClose}>
+    <Modal scrollable size="lg" show={show} onHide={handleClose}>
       <Modal.Header className="py-2" closeButton>
         <Modal.Title className="h5">
-          {truncate(capitalize(to.name), 20)}
+          {truncate(capitalize(tp.name), 20)}
         </Modal.Title>
       </Modal.Header>
 
       <Modal.Body className="p-0 m-0">
         <div className="container-fluid">
           <form className="row" onSubmit={onUpdateUser}>
-            <div className="col-md-12">
+            <div className="col-md-6">
               <div className="mb-3 mt-2">
                 <label className="form-label" htmlFor="name">
                   Name
@@ -106,21 +97,21 @@ const EditTo = ({ to, onHide }) => {
                   type="text"
                   className="form-control cus-form-control rounded-2"
                   id="name"
-                  placeholder={to.name}
+                  placeholder={tp.name}
                   onChange={(e) => setName(e.target.value)}
                 />
               </div>
 
               <div className="mb-3">
                 <label className="form-label" htmlFor="email">
-                  Email
+                  Email / Auto ID
                 </label>
                 <input
                   type="email"
                   disabled
                   className="form-control cus-form-control rounded-2"
                   id="email"
-                  placeholder={to.email}
+                  placeholder={tp.email}
                 />
               </div>
 
@@ -132,22 +123,95 @@ const EditTo = ({ to, onHide }) => {
                   type="text"
                   className="form-control cus-form-control rounded-2"
                   id="phoneNumber"
-                  placeholder={to.phoneNumber}
+                  placeholder={tp.phoneNumber}
                   onChange={(e) => setPhoneNumber(e.target.value)}
                 />
               </div>
 
               <div className="mb-3">
                 <label className="form-label" htmlFor="location">
-                  Location
+                  Address
                 </label>
                 <input
                   type="text"
                   className="form-control cus-form-control rounded-2"
                   id="location"
-                  placeholder={to.location}
+                  placeholder={tp.location}
                   onChange={(e) => setLocation(e.target.value)}
                 />
+              </div>
+            </div>
+
+            <div className="col-md-6">
+              <div className="col-12 mt-2 mb-3">
+                <div className="row">
+                  <div className="col-6">
+                    <label className="form-label" htmlFor="state">
+                      State
+                    </label>
+                    <ReactSelect
+                      id="state"
+                      placeholder={capitalize(tp.state)}
+                      options={states.all().map((state) => ({
+                        label: capitalize(state.state),
+                        value: state,
+                      }))}
+                      styles={selectFormStyle}
+                      theme={selectFormTheme}
+                      onChange={(option) => setState(option.value)}
+                    />
+                  </div>
+
+                  <div className="col-6">
+                    <label className="form-label" htmlFor="lga">
+                      LGA
+                    </label>
+                    <ReactSelect
+                      isDisabled={state.length <= 0}
+                      id="lga"
+                      placeholder={capitalize(tp.lga)}
+                      options={(state.length <= 0 ? [] : state.lgas).map(
+                        (lga) => ({
+                          label: capitalize(lga),
+                          value: lga,
+                        })
+                      )}
+                      styles={selectFormStyle}
+                      theme={selectFormTheme}
+                      onChange={(option) => setLga(option.value)}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div className="col-12 mb-3">
+                <div className="row">
+                  <div className="col-6">
+                    <label className="form-label" htmlFor="vin">
+                      VIN
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control cus-form-control rounded-2"
+                      id="vin"
+                      placeholder={tp.vin}
+                      onChange={(e) => setVin(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="col-6">
+                    <label className="form-label" htmlFor="chasis">
+                      Chasis
+                    </label>
+                    <input
+                      type="text"
+                      className="form-control cus-form-control rounded-2"
+                      id="chasis"
+                      placeholder={tp.chasis}
+                      onChange={(e) => setChasis(e.target.value)}
+                    />
+                  </div>
+                </div>
               </div>
 
               <div className="col-12 mb-3">
@@ -161,7 +225,7 @@ const EditTo = ({ to, onHide }) => {
                       disabled={driverLicense && driverLicense.length > 0}
                       className="form-control cus-form-control rounded-2"
                       id="nin"
-                      placeholder={to.nin !== null ? to.nin : "eg: 0000000000"}
+                      placeholder={tp.nin !== null ? tp.nin : "eg: 0000000000"}
                       onChange={(e) => setNIN(e.target.value)}
                     />
                   </div>
@@ -176,8 +240,8 @@ const EditTo = ({ to, onHide }) => {
                       className="form-control cus-form-control rounded-2"
                       id="driverLicense"
                       placeholder={
-                        to.driverLicense !== null
-                          ? to.driverLicense
+                        tp.driverLicense !== null
+                          ? tp.driverLicense
                           : "eg: 0000000000"
                       }
                       onChange={(e) => setDriverLicense(e.target.value)}
@@ -188,34 +252,15 @@ const EditTo = ({ to, onHide }) => {
             </div>
 
             <div className="col-md-12 d-flex justify-content-between my-3">
-              <div className="d-flex">
-                <button
-                  type="button"
-                  disabled={isDeleteLoading}
-                  onClick={() => deleteTo(to)}
-                  className="btn-dash bg-danger text-white border-0 me-2"
-                >
-                  <CloseSquare size={20} />
-                  {isDeleteLoading ? <Loader /> : "Delete"}
-                </button>
-
-                <button
-                  type="button"
-                  disabled={isStatusLoading}
-                  onClick={() => changeTo(to)}
-                  className={`btn-dash ${
-                    to.isSupervisor ? "bg-warning" : "bg-success"
-                  } text-white border-0`}
-                >
-                  {isStatusLoading ? (
-                    <Loader />
-                  ) : to.isSupervisor ? (
-                    "Downgrade"
-                  ) : (
-                    "Upgrade"
-                  )}
-                </button>
-              </div>
+              <button
+                type="button"
+                disabled={isDeleteLoading}
+                onClick={() => deleteTp(tp)}
+                className="btn-dash bg-danger text-white border-0 me-2"
+              >
+                <CloseSquare size={20} />
+                {isDeleteLoading ? <Loader /> : "Delete"}
+              </button>
 
               <button
                 type="submit"
@@ -223,7 +268,7 @@ const EditTo = ({ to, onHide }) => {
                 className="btn-dash btn-primary border-0"
               >
                 <TickSquare size={20} />
-                {isLoading ? <Loader /> : "Update Tax Officer"}
+                {isLoading ? <Loader /> : "Update Tax Payer"}
               </button>
             </div>
           </form>
@@ -233,4 +278,4 @@ const EditTo = ({ to, onHide }) => {
   );
 };
 
-export default EditTo;
+export default EditTp;
