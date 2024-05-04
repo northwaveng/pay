@@ -47,7 +47,7 @@ const SearchPayment = ({ selectedSearchPayment }) => {
           isMobile ? "" : "me-4"
         }`}
         id="searchQ"
-        placeholder="search by name"
+        placeholder="search by ID"
         ref={searchRef}
         onChange={onSearch}
         onPaste={onSearch}

@@ -3,7 +3,7 @@
 import Siderbar from "@/app/_components/sidebar";
 import { useEffect, useState } from "react";
 import Payment from "@/app/_components/payment/payment";
-// import EditPayment from "@/app/_components/payment/edit_payment";
+import EditPayment from "@/app/_components/payment/edit_payment";
 import NewPayment from "@/app/_components/payment/new_payment";
 import { useAuth } from "@/app/_components/firebase/fire_auth_context";
 import NeedAuth from "@/app/_components/need_auth";
@@ -44,20 +44,19 @@ const PaymentPage = () => {
         newPayment={handleNewPayment}
       />
 
-      {/* {selectedPayment && (
+      {selectedPayment && (
         <EditPayment
           payment={selectedPayment}
           onHide={() => setSelectedPayment(null)}
         />
       )}
-*/}
 
       {newPayment && (
         <NewPayment
           newPayment={newPayment}
           onHide={() => setNewPayment(null)}
         />
-      )} 
+      )}
     </>
   );
 };
