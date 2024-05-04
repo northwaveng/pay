@@ -47,6 +47,7 @@ const Pay = () => {
       return (
         <>
           <Siderbar />
+
           <Dashboard />
         </>
       );

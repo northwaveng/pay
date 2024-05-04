@@ -9,7 +9,7 @@ import capitalize from "@/app/_utils/capitalize";
 import { formatTimestamp } from "@/app/_utils/format_timestamp";
 import { toNGN } from "@/app/_utils/to_currency";
 
-const EditPayment = ({ payment, onHide }) => {
+const EditPayment = ({ payment, isSupervisor = false, onHide }) => {
   const [show, setShow] = useState(!!payment);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -113,15 +113,22 @@ const EditPayment = ({ payment, onHide }) => {
               </div>
             </div>
 
-            <div className="col-md-12 d-flex justify-content-end my-3">
-              <button
-                disabled={isLoading}
-                className="btn-dash btn-primary border-0"
-              >
-                <Setting size={20} />
-                {isLoading ? <Loader /> : "Generate Insurance"}
-              </button>
-            </div>
+            {!isSupervisor ? (
+              <div className="col-md-12 d-flex justify-content-end my-3">
+                <button
+                  disabled={isLoading}
+                  className="btn-dash btn-primary border-0"
+                >
+                  <Setting size={20} />
+                  {isLoading ? <Loader /> : "Generate Insurance"}
+                </button>
+              </div>
+            ) : (
+              <div className="col-md-12 text-center text-primary mb-3">
+                <hr />
+                <h5>Track Transaction From PayStack HERE</h5>
+              </div>
+            )}
           </div>
         </div>
       </Modal.Body>

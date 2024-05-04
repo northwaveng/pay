@@ -14,6 +14,7 @@ import {
   query,
   serverTimestamp,
   setDoc,
+  updateDoc,
   where,
 } from "firebase/firestore";
 import { db } from "@/app/_components/firebase/fire_config";
@@ -26,6 +27,7 @@ import { intFloatOnly } from "@/app/_utils/keyboard_control";
 
 const NewPayment = ({ newPayment, onHide }) => {
   const [show, setShow] = useState(!!newPayment);
+  const [transInfo, setTransInfo] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [tpUsers, setTpUsers] = useState([]);
   const [insurances, setInsurances] = useState([]);
@@ -35,6 +37,14 @@ const NewPayment = ({ newPayment, onHide }) => {
   const [expiry, setExpiry] = useState(null);
   const [insurance, setInsurance] = useState(null);
   const { authUser } = useAuth();
+
+  useEffect(() => {
+    const unsubscribe = onSnapshot(doc(db, "transactions", "info"), (snap) => {
+      if (snap.exists()) setTransInfo(snap.data());
+    });
+
+    return () => unsubscribe();
+  }, []);
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
@@ -87,8 +97,19 @@ const NewPayment = ({ newPayment, onHide }) => {
 
     setDoc(doc(collRef, id), userDoc)
       .then(() => {
-        handleClose();
-        toast.dark("Payment completed successfully");
+        updateDoc(doc(db, "transactions", "info"), {
+          total: `${parseInt(transInfo.total) + 1}`,
+          totalPaid: `${parseFloat(transInfo.totalPaid) + parseFloat(amount)}`,
+        })
+          .then(() => {
+            handleClose();
+            toast.dark("Payment completed successfully");
+          })
+          .catch((e) => {
+            toast.dark(`Error occured: ${e.message}`, {
+              className: "text-danger",
+            });
+          });
       })
       .catch((e) => {
         toast.dark(`Error occured: ${e.message}`, {

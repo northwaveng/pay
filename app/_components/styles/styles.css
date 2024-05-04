@@ -464,13 +464,8 @@ input[type="file"]::file-selector-button {
 }
 
 .dash-body {
-  position: absolute;
-  bottom: 0;
-  z-index: -99;
-  right: 0;
-  width: calc(100% - 240px);
-  height: calc(100vh - 6.5rem);
-  overflow-y: scroll;
+  width: calc(100vw - 240px);
+  margin-top: 6.5rem;
 }
 
 .dash-header {
@@ -526,7 +521,8 @@ input[type="file"]::file-selector-button {
   }
 
   .dash-body {
-    width: calc(100% - 140px);
+    width: calc(100vw - 140px);
+    margin-top: 6.5rem;
   }
 
   .dash-header {
@@ -545,8 +541,8 @@ input[type="file"]::file-selector-button {
   }
 
   .dash-body {
-    width: 80%;
-    height: calc(100vh - 12rem);
+    width: 80vw;
+    margin-top: 12rem;
   }
 
   .dash-header {

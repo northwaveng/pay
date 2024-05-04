@@ -64,7 +64,7 @@ const Payment = ({ selectedPayment, newPayment }) => {
   const renderTableRow = (pay, index) => (
     <tr key={index} className="pe-active" onClick={() => selectedPayment(pay)}>
       <td className="align-middle">{capitalize(truncate(pay.holder, 30))}</td>
-      <td className="align-middle">{capitalize(pay.transID)}</td>
+      <td className="align-middle">{pay.transID}</td>
       <td className="align-middle">{toNGN(pay.amount)}</td>
       <td className="align-middle">{capitalize(pay.insurance.name)}</td>
       <td className="align-middle">{formatTimestamp(pay.createdOn)}</td>
