@@ -59,7 +59,12 @@ const To = ({ selectedTo, newTo }) => {
 
   const renderTableRow = (to, index) => (
     <tr key={index} className="pe-active" onClick={() => selectedTo(to)}>
-      <td className="align-middle">{capitalize(truncate(to.name, 30))}</td>
+      <td className="align-middle">
+        {!to.hasPassword && (
+          <span className="badge text-bg-primary me-2"> </span>
+        )}
+        {capitalize(truncate(to.name, 30))}
+      </td>
       <td className="align-middle">{capitalize(to.phoneNumber)}</td>
       <td className="align-middle">{capitalize(to.location)}</td>
       <td className="align-middle">{truncate(to.email, 30)}</td>
