@@ -274,7 +274,7 @@ input[type="file"]::file-selector-button {
   content: "Select file";
   display: inline-block;
   cursor: pointer;
-  background: #007bff;
+  background: #346bc8;
   color: #fff;
   padding: 8px 12px;
   border-radius: 6px;
@@ -304,6 +304,9 @@ input[type="file"]::file-selector-button {
   background: #fff !important;
 }
 
+.Toastify__toast-theme--dark {
+  background: #346bc8 !important;
+}
 /* sidebar */
 .sidebar {
   width: 240px;

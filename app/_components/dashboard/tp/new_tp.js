@@ -45,6 +45,7 @@ const NewTp = ({ newTp, onHide }) => {
       isTaxPayer: true,
       isSupervisor: false,
       isTaxOfficer: false,
+      hasPassword: false,
       state: state.state.toLowerCase(),
       lga: lga.toLowerCase(),
       createdOn: serverTimestamp(),

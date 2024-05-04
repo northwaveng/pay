@@ -34,6 +34,7 @@ const NewTo = ({ newTo, onHide }) => {
       chasis: "",
       isSupervisor: false,
       isTaxOfficer: true,
+      hasPassword: false,
       state: "",
       lga: "",
       createdOn: serverTimestamp(),

@@ -34,7 +34,7 @@ const Payment = ({ selectedPayment, newPayment }) => {
       query(
         collection(db, "transactions"),
         where("to", "==", authUser.email),
-        orderBy("createdOn")
+        orderBy("createdOn", "desc")
       ),
       (snap) => {
         setIsLoadingPayment(false);

@@ -31,7 +31,7 @@ const Tp = ({ selectedTp, newTp }) => {
       query(
         collection(db, "users"),
         where("isTaxPayer", "==", true),
-        orderBy("createdOn")
+        orderBy("createdOn", "desc")
       ),
       (snap) => {
         setIsLoadingTp(false);

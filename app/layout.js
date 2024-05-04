@@ -1,8 +1,10 @@
-import { Inter } from "next/font/google";
 import "bootstrap/dist/css/bootstrap.css";
 import "@/app/_components/styles/styles.css";
 import BootstrapClient from "@/app/_components/bootstrap_client";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { FireAuthProvider } from "@/app/_components/firebase/fire_auth_context";
+import { Inter } from "next/font/google";
 
 const inter = Inter({ subsets: ["latin"] });
 const baseURL = "https://pay.northwaveng.com/";
@@ -42,6 +44,7 @@ export default function RootLayout({ children }) {
         <body className={inter.className} suppressHydrationWarning={true}>
           {children}
           <BootstrapClient />
+          <ToastContainer position="bottom-center" autoClose={3000} />
         </body>
       </html>
     </FireAuthProvider>

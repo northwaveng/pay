@@ -31,7 +31,7 @@ const To = ({ selectedTo, newTo }) => {
       query(
         collection(db, "users"),
         where("isTaxOfficer", "==", true),
-        orderBy("createdOn")
+        orderBy("createdOn", "desc")
       ),
       (snap) => {
         setIsLoadingTo(false);

@@ -1,7 +1,7 @@
 "use client";
 
 import { truncate } from "@/app/_utils/truncate";
-import { CloseSquare, TickSquare } from "iconsax-react";
+import { CloseSquare, Link, TickSquare } from "iconsax-react";
 import { Modal } from "react-bootstrap";
 import { useState } from "react";
 import Loader from "@/app/_components/loader";
@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import { deleteDoc, doc, updateDoc } from "firebase/firestore";
 import { db } from "@/app/_components/firebase/fire_config";
 import capitalize from "@/app/_utils/capitalize";
+import copyToClipboard from "@/app/_utils/copy_clipboard";
 
 const EditTo = ({ to, onHide }) => {
   const [show, setShow] = useState(!!to);
@@ -79,6 +80,15 @@ const EditTo = ({ to, onHide }) => {
         });
       })
       .finally((_) => setIsStatusLoading(false));
+  };
+
+  const copySignUpLink = (to) => {
+    const url = "https://pay.northwaveng.com/signup";
+    const name = `${to.name}`;
+    const email = to.email;
+    const signupLink = `${url}?email=${email}&name=${name}`;
+
+    copyToClipboard(signupLink, "Signup link Copied!");
   };
 
   const handleClose = () => {
@@ -199,22 +209,33 @@ const EditTo = ({ to, onHide }) => {
                   {isDeleteLoading ? <Loader /> : "Delete"}
                 </button>
 
-                <button
-                  type="button"
-                  disabled={isStatusLoading}
-                  onClick={() => changeTo(to)}
-                  className={`btn-dash ${
-                    to.isSupervisor ? "bg-warning" : "bg-success"
-                  } text-white border-0`}
-                >
-                  {isStatusLoading ? (
-                    <Loader />
-                  ) : to.isSupervisor ? (
-                    "Downgrade"
-                  ) : (
-                    "Upgrade"
-                  )}
-                </button>
+                {!to.hasPassword ? (
+                  <button
+                    type="button"
+                    onClick={() => copySignUpLink(to)}
+                    className="btn-dash ms-2"
+                  >
+                    <Link size={20} />
+                    Sign up link
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    disabled={isStatusLoading}
+                    onClick={() => changeTo(to)}
+                    className={`btn-dash ${
+                      to.isSupervisor ? "bg-warning" : "bg-success"
+                    } text-white border-0`}
+                  >
+                    {isStatusLoading ? (
+                      <Loader />
+                    ) : to.isSupervisor ? (
+                      "Downgrade"
+                    ) : (
+                      "Upgrade"
+                    )}
+                  </button>
+                )}
               </div>
 
               <button

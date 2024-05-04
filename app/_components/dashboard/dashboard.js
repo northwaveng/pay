@@ -73,7 +73,7 @@ const Dashboard = () => {
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
-      query(collection(db, "transactions"), orderBy("createdOn")),
+      query(collection(db, "transactions"), orderBy("createdOn", "desc")),
       (snap) => {
         setIsLoadingPayment(false);
         setPayments(snap.docs.map((doc) => doc.data()));

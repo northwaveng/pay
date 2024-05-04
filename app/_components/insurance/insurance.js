@@ -22,7 +22,7 @@ const Insurance = ({ selectedInsurance, newInsurance }) => {
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
-      query(collection(db, "insurances"), orderBy("createdOn")),
+      query(collection(db, "insurances"), orderBy("createdOn", "desc")),
       (snap) => {
         setIsLoadingInsurance(false);
         setInsurances(snap.docs.map((doc) => doc.data()));
