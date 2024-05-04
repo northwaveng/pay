@@ -15,8 +15,6 @@ const NewTo = ({ newTo, onHide }) => {
   const [email, setEmail] = useState("");
   const [location, setLocation] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [nin, setNIN] = useState(null);
-  const [driverLicense, setDriverLicense] = useState(null);
 
   const onAddTo = async (e) => {
     e.preventDefault();
@@ -28,8 +26,8 @@ const NewTo = ({ newTo, onHide }) => {
       email: email.toLowerCase(),
       location: location.toLowerCase(),
       phoneNumber: phoneNumber.toLowerCase(),
-      nin: nin,
-      driverLicense: driverLicense,
+      nin: null,
+      driverLicense: null,
       vin: "",
       chasis: "",
       isSupervisor: false,
@@ -77,7 +75,7 @@ const NewTo = ({ newTo, onHide }) => {
                   required
                   className="form-control cus-form-control rounded-2"
                   id="name"
-                  placeholder="eg: third party only"
+                  placeholder="eg: john doe"
                   onChange={(e) => setName(e.target.value)}
                 />
               </div>
@@ -122,40 +120,6 @@ const NewTo = ({ newTo, onHide }) => {
                   placeholder="eg: NO: 10 ABC"
                   onChange={(e) => setLocation(e.target.value)}
                 />
-              </div>
-
-              <div className="col-12 mb-3">
-                <div className="row">
-                  <div className="col-6">
-                    <label className="form-label" htmlFor="nin">
-                      NIN
-                    </label>
-                    <input
-                      type="text"
-                      required={driverLicense === null}
-                      disabled={driverLicense && driverLicense.length > 0}
-                      className="form-control cus-form-control rounded-2"
-                      id="nin"
-                      placeholder="eg: 0000000000"
-                      onChange={(e) => setNIN(e.target.value)}
-                    />
-                  </div>
-
-                  <div className="col-6">
-                    <label className="form-label" htmlFor="driverLicense">
-                      Driver License
-                    </label>
-                    <input
-                      type="text"
-                      required={nin === null}
-                      disabled={nin && nin.length > 0}
-                      className="form-control cus-form-control rounded-2"
-                      id="driverLicense"
-                      placeholder="eg: 0000000000"
-                      onChange={(e) => setDriverLicense(e.target.value)}
-                    />
-                  </div>
-                </div>
               </div>
             </div>
 

@@ -19,8 +19,6 @@ const EditTo = ({ to, onHide }) => {
   const [name, setName] = useState("");
   const [location, setLocation] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-  const [nin, setNIN] = useState(null);
-  const [driverLicense, setDriverLicense] = useState(null);
 
   const onUpdateUser = async (e) => {
     e.preventDefault();
@@ -31,10 +29,6 @@ const EditTo = ({ to, onHide }) => {
       location: location.length > 0 ? location.toLowerCase() : to.location,
       phoneNumber:
         phoneNumber.length > 0 ? phoneNumber.toLowerCase() : to.phoneNumber,
-      nin: nin ? nin.toLowerCase() : to.nin,
-      driverLicense: driverLicense
-        ? driverLicense.toLowerCase()
-        : to.driverLicense,
     })
       .then(() => {
         handleClose();
@@ -158,42 +152,6 @@ const EditTo = ({ to, onHide }) => {
                   placeholder={to.location}
                   onChange={(e) => setLocation(e.target.value)}
                 />
-              </div>
-
-              <div className="col-12 mb-3">
-                <div className="row">
-                  <div className="col-6">
-                    <label className="form-label" htmlFor="nin">
-                      NIN
-                    </label>
-                    <input
-                      type="text"
-                      disabled={driverLicense && driverLicense.length > 0}
-                      className="form-control cus-form-control rounded-2"
-                      id="nin"
-                      placeholder={to.nin !== null ? to.nin : "eg: 0000000000"}
-                      onChange={(e) => setNIN(e.target.value)}
-                    />
-                  </div>
-
-                  <div className="col-6">
-                    <label className="form-label" htmlFor="driverLicense">
-                      Driver License
-                    </label>
-                    <input
-                      type="text"
-                      disabled={nin && nin.length > 0}
-                      className="form-control cus-form-control rounded-2"
-                      id="driverLicense"
-                      placeholder={
-                        to.driverLicense !== null
-                          ? to.driverLicense
-                          : "eg: 0000000000"
-                      }
-                      onChange={(e) => setDriverLicense(e.target.value)}
-                    />
-                  </div>
-                </div>
               </div>
             </div>
 

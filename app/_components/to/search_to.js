@@ -29,10 +29,10 @@ const SearchTo = ({ selectedSearchTo }) => {
       onSnapshot(
         query(
           collection(db, "users"),
-          where("name", ">=", value.toLowerCase()),
-          where("name", "<=", value.toLowerCase() + "\uf8ff"),
+          where("email", ">=", value.toLowerCase()),
+          where("email", "<=", value.toLowerCase() + "\uf8ff"),
           where("isTaxOfficer", "==", true),
-          orderBy("name"),
+          orderBy("email"),
           limit(10)
         ),
         (snap) => setSearchR(snap.docs.map((doc) => doc.data()))
@@ -48,7 +48,7 @@ const SearchTo = ({ selectedSearchTo }) => {
           isMobile ? "" : "me-4"
         }`}
         id="searchQ"
-        placeholder="search by name"
+        placeholder="search by email"
         ref={searchRef}
         onChange={onSearch}
         onPaste={onSearch}

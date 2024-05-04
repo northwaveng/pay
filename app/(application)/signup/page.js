@@ -17,6 +17,8 @@ import { db } from "@/app/_components/firebase/fire_config";
 const SignupOldCustomer = ({ searchParams }) => {
   const [isLoading, setIsLoading] = useState(false);
   const [password, setPassword] = useState("");
+  const [nin, setNIN] = useState(null);
+  const [driverLicense, setDriverLicense] = useState(null);
   const { loading, authUser, signUp } = useAuth();
   const router = useRouter();
   const { email, name } = searchParams;
@@ -56,6 +58,8 @@ const SignupOldCustomer = ({ searchParams }) => {
       .then(() => {
         updateDoc(doc(db, "users", email), {
           hasPassword: true,
+          nin: nin,
+          driverLicense: driverLicense,
         })
           .then(() => {
             toast.dark("🎉 Congratulation");
@@ -113,7 +117,7 @@ const SignupOldCustomer = ({ searchParams }) => {
               />
             </div>
 
-            <div className="mb-4">
+            <div className="mb-3">
               <label className="form-label" htmlFor="password">
                 Password
               </label>
@@ -125,6 +129,40 @@ const SignupOldCustomer = ({ searchParams }) => {
                 placeholder="********"
                 onChange={(e) => setPassword(e.target.value)}
               />
+            </div>
+
+            <div className="mb-4">
+              <div className="row">
+                <div className="col-6">
+                  <label className="form-label" htmlFor="nin">
+                    NIN
+                  </label>
+                  <input
+                    type="text"
+                    required={driverLicense === null}
+                    disabled={driverLicense && driverLicense.length > 0}
+                    className="form-control cus-form-control rounded-2"
+                    id="nin"
+                    placeholder="eg: 0000000000"
+                    onChange={(e) => setNIN(e.target.value)}
+                  />
+                </div>
+
+                <div className="col-6">
+                  <label className="form-label" htmlFor="driverLicense">
+                    Driver License
+                  </label>
+                  <input
+                    type="text"
+                    required={nin === null}
+                    disabled={nin && nin.length > 0}
+                    className="form-control cus-form-control rounded-2"
+                    id="driverLicense"
+                    placeholder="eg: 0000000000"
+                    onChange={(e) => setDriverLicense(e.target.value)}
+                  />
+                </div>
+              </div>
             </div>
 
             <button

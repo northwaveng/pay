@@ -88,7 +88,7 @@ const NewTp = ({ newTp, onHide }) => {
                   required
                   className="form-control cus-form-control rounded-2"
                   id="name"
-                  placeholder="eg: third party only"
+                  placeholder="eg: john doe"
                   onChange={(e) => setName(e.target.value)}
                 />
               </div>
