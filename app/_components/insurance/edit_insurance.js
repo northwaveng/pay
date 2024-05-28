@@ -30,7 +30,7 @@ const EditInsurance = ({ insurance, onHide }) => {
         toast.dark("Insurance Type updated successfully");
       })
       .catch((e) => {
-        toast.dark(`Error occured: ${e.message}`, {
+        toast.error(`Error occured: ${e.message}`, {
           className: "text-danger",
         });
       });
@@ -45,7 +45,7 @@ const EditInsurance = ({ insurance, onHide }) => {
         toast.dark("Insurance Type deleted successfully");
       })
       .catch((e) => {
-        toast.dark(`Error occured: ${e.message}`, {
+        toast.error(`Error occured: ${e.message}`, {
           className: "text-danger",
         });
       })

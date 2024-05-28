@@ -40,7 +40,7 @@ const NewInsurance = ({ newInsurance, onHide }) => {
             toast.dark("Insurance Type added successfully");
           })
           .catch((e) => {
-            toast.dark(
+            toast.error(
               `Error occured while updating insurance ID: ${e.message}`,
               {
                 className: "text-danger",
@@ -49,7 +49,7 @@ const NewInsurance = ({ newInsurance, onHide }) => {
           });
       })
       .catch((e) => {
-        toast.dark(`Error occured: ${e.message}`, {
+        toast.error(`Error occured: ${e.message}`, {
           className: "text-danger",
         });
       })

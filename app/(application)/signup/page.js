@@ -66,7 +66,7 @@ const SignupOldCustomer = ({ searchParams }) => {
             router.replace("https://pay.northwaveng.com/");
           })
           .catch((e) => {
-            toast.dark(`Error occured while updating customer: ${e.message}`, {
+            toast.error(`Error occured while updating customer: ${e.message}`, {
               className: "text-danger",
             });
           });

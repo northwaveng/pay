@@ -24,6 +24,8 @@ import ReactSelect from "react-select";
 import capitalize from "@/app/_utils/capitalize";
 import { useAuth } from "@/app/_components/firebase/fire_auth_context";
 import { intFloatOnly } from "@/app/_utils/keyboard_control";
+import { paystackPay } from "@/app/actions/actions";
+import { useRouter } from "next/navigation";
 
 const NewPayment = ({ newPayment, onHide }) => {
   const [show, setShow] = useState(!!newPayment);
@@ -37,6 +39,7 @@ const NewPayment = ({ newPayment, onHide }) => {
   const [expiry, setExpiry] = useState(null);
   const [insurance, setInsurance] = useState(null);
   const { authUser } = useAuth();
+  const router = useRouter();
 
   useEffect(() => {
     const unsubscribe = onSnapshot(doc(db, "transactions", "info"), (snap) => {
@@ -68,51 +71,40 @@ const NewPayment = ({ newPayment, onHide }) => {
     return () => unsubscribe();
   }, []);
 
-  const onAddPayment = async (e) => {
+  const onMakePayment = (e) => {
     e.preventDefault();
     setIsLoading(true);
 
-    const id = v4();
-    const collRef = collection(db, "transactions");
     const commenceTimestamp = commence ? new Date(commence) : null;
     const expiryTimestamp = expiry ? new Date(expiry) : null;
+    const totalPaid = `${parseFloat(transInfo.totalPaid) + parseFloat(amount)}`;
 
-    const userDoc = {
-      transID: id,
-      tp: tp.email,
-      to: authUser.email,
+    paystackPay({
       amount: amount,
-      holder: tp.name.toUpperCase(),
-      commence: commenceTimestamp
-        ? Timestamp.fromDate(commenceTimestamp)
-        : null,
-      expiry: expiryTimestamp ? Timestamp.fromDate(expiryTimestamp) : null,
-      insurance: {
-        id: insurance.id,
-        name: insurance.name,
-        type: insurance.type,
+      email: tp.email,
+      currency: "NGN",
+      callback_url: `${process.env.NEXT_PUBLIC_PAYMENT_STATUS_TEST_DOMAIN}payment/status`,
+      metadata: {
+        total: `${parseInt(transInfo.total) + 1}`,
+        totalPaid: totalPaid,
+        tp: tp.email,
+        to: authUser.email,
+        amount: amount,
+        holder: tp.name.toUpperCase(),
+        commence: commenceTimestamp ? commenceTimestamp : null,
+        expiry: expiryTimestamp ? expiryTimestamp : null,
+        insurance: {
+          id: insurance.id,
+          name: insurance.name,
+          type: insurance.type,
+        },
       },
-      createdOn: serverTimestamp(),
-    };
-
-    setDoc(doc(collRef, id), userDoc)
-      .then(() => {
-        updateDoc(doc(db, "transactions", "info"), {
-          total: `${parseInt(transInfo.total) + 1}`,
-          totalPaid: `${parseFloat(transInfo.totalPaid) + parseFloat(amount)}`,
-        })
-          .then(() => {
-            handleClose();
-            toast.dark("Payment completed successfully");
-          })
-          .catch((e) => {
-            toast.dark(`Error occured: ${e.message}`, {
-              className: "text-danger",
-            });
-          });
+    })
+      .then((res) => {
+        router.push(res.data.authorization_url);
       })
       .catch((e) => {
-        toast.dark(`Error occured: ${e.message}`, {
+        toast.error(`Error occured: ${e.message}`, {
           className: "text-danger",
         });
       })
@@ -132,7 +124,7 @@ const NewPayment = ({ newPayment, onHide }) => {
 
       <Modal.Body className="p-0 m-0">
         <div className="container-fluid">
-          <form className="row" onSubmit={onAddPayment}>
+          <form className="row" onSubmit={onMakePayment}>
             <div className="col-md-6">
               <div className="mt-2 mb-3">
                 <label className="form-label" htmlFor="tp">

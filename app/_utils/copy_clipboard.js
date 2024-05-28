@@ -5,7 +5,7 @@ const copyToClipboard = (text, success) => {
     .writeText(text)
     .then(() => toast.dark(success))
     .catch((e) => {
-      toast.dark(`Failed to copy: ${e}`, {
+      toast.error(`Failed to copy: ${e}`, {
         className: "text-danger",
       });
     });

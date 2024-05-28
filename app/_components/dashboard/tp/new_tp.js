@@ -57,7 +57,7 @@ const NewTp = ({ newTp, onHide }) => {
         toast.dark("Tax Payer added successfully");
       })
       .catch((e) => {
-        toast.dark(`Error occured: ${e.message}`, {
+        toast.error(`Error occured: ${e.message}`, {
           className: "text-danger",
         });
       })

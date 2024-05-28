@@ -35,6 +35,7 @@ const PaymentPage = () => {
   if (!authUser) return <NeedAuth />;
 
   if (user && !user.isTaxOfficer) return <NeedAccess />;
+  
   return (
     <>
       <Siderbar />

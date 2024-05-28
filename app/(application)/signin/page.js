@@ -57,15 +57,15 @@ const Signin = () => {
       })
       .catch((error) => {
         if (error.code === "auth/invalid-login-credentials") {
-          toast.dark("Invalid sign in credentials", {
+          toast.error("Invalid sign in credentials", {
             className: "text-danger",
           });
         } else if (error.code === "auth/too-many-requests") {
-          toast.dark("Too many requests", {
+          toast.error("Too many requests", {
             className: "text-danger",
           });
         } else {
-          toast.dark(`Error: ${error.message}`, {
+          toast.error(`Error: ${error.message}`, {
             className: "text-danger",
           });
         }

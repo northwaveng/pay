@@ -35,7 +35,7 @@ const EditTo = ({ to, onHide }) => {
         toast.dark("Tax Officer updated successfully");
       })
       .catch((e) => {
-        toast.dark(`Error occured: ${e.message}`, {
+        toast.error(`Error occured: ${e.message}`, {
           className: "text-danger",
         });
       });
@@ -50,7 +50,7 @@ const EditTo = ({ to, onHide }) => {
         toast.dark("Tax Officer deleted successfully");
       })
       .catch((e) => {
-        toast.dark(`Error occured: ${e.message}`, {
+        toast.error(`Error occured: ${e.message}`, {
           className: "text-danger",
         });
       })
@@ -69,7 +69,7 @@ const EditTo = ({ to, onHide }) => {
         toast.dark("Tax Officer upgraded successfully");
       })
       .catch((e) => {
-        toast.dark(`Error occured: ${e.message}`, {
+        toast.error(`Error occured: ${e.message}`, {
           className: "text-danger",
         });
       })

@@ -50,7 +50,7 @@ const EditTp = ({ tp, onHide }) => {
         toast.dark("Tax Payer updated successfully");
       })
       .catch((e) => {
-        toast.dark(`Error occured: ${e.message}`, {
+        toast.error(`Error occured: ${e.message}`, {
           className: "text-danger",
         });
       });
@@ -65,7 +65,7 @@ const EditTp = ({ tp, onHide }) => {
         toast.dark("Tax Payer deleted successfully");
       })
       .catch((e) => {
-        toast.dark(`Error occured: ${e.message}`, {
+        toast.error(`Error occured: ${e.message}`, {
           className: "text-danger",
         });
       })
