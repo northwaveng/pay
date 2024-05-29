@@ -83,6 +83,7 @@ const NewPayment = ({ newPayment, onHide }) => {
       amount: amount,
       email: tp.email,
       currency: "NGN",
+      channels: ["card"],
       callback_url: `${process.env.PAYMENT_STATUS_TEST_DOMAIN}payment/status`,
       metadata: {
         total: `${parseInt(transInfo.total) + 1}`,
