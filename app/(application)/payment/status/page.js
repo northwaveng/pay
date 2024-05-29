@@ -72,6 +72,9 @@ const PaymentStatus = ({ searchParams }) => {
         updateDoc(doc(db, "transactions", "info"), {
           total: metadata.total,
           totalPaid: metadata.totalPaid,
+          "split.govrn": metadata.split.govrn,
+          "split.broker": metadata.split.broker,
+          "split.northwave": metadata.split.northwave,
         })
           .then(() => {})
           .catch((e) => {

@@ -93,6 +93,11 @@ const NewPayment = ({ newPayment, onHide }) => {
         holder: tp.name.toUpperCase(),
         commence: commenceTimestamp ? commenceTimestamp : null,
         expiry: expiryTimestamp ? expiryTimestamp : null,
+        split: {
+          govrn: `${parseFloat(amount) - 300}`,
+          broker: `${parseFloat(transInfo.split.broker) + 165}`,
+          northwave: `${parseFloat(transInfo.split.northwave) + 135}`,
+        },
         insurance: {
           id: insurance.id,
           name: insurance.name,
