@@ -62,7 +62,7 @@ const Tp = ({ selectedTp, newTp }) => {
       <td className="align-middle">{capitalize(truncate(tp.name, 30))}</td>
       <td className="align-middle">{capitalize(tp.phoneNumber)}</td>
       <td className="align-middle">{capitalize(tp.lga)}</td>
-      <td className="align-middle">{truncate(tp.location, 30)}</td>
+      <td className="align-middle">{capitalize(truncate(tp.location, 30))}</td>
       <td className="align-middle">{formatTimestamp(tp.createdOn)}</td>
     </tr>
   );
