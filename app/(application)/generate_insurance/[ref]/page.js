@@ -55,7 +55,7 @@ const GenerateInsurance = ({ params }) => {
               <h4>Insurance</h4>
 
               <img
-                src={`https://barcode.orcascan.com/?type=qr&data=https://pay.northwaveng.com/generate_insurance/${isSuccess.metadata.transID}`}
+                src={`https://barcode.orcascan.com/?type=qr&data=https://pay.northwaveng.com/generate_insurance/${isSuccess.reference}`}
                 width={100}
                 height={100}
                 priority
