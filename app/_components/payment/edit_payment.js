@@ -10,11 +10,13 @@ import { formatTimestamp } from "@/app/_utils/format_timestamp";
 import { toNGN } from "@/app/_utils/to_currency";
 import { toast } from "react-toastify";
 import { verifyPaystackTransaction } from "@/app/actions/actions";
+import { useRouter } from "next/navigation";
 
 const EditPayment = ({ payment, isSupervisor = false, onHide }) => {
   const [show, setShow] = useState(!!payment);
   const [isLoading, setIsLoading] = useState(false);
   const [record, setRecord] = useState(null);
+  const router = useRouter();
 
   useEffect(() => {
     verifyPaystackTransaction({
@@ -32,8 +34,6 @@ const EditPayment = ({ payment, isSupervisor = false, onHide }) => {
     setShow(false);
     if (onHide) onHide();
   };
-
-  console.log(record);
 
   return (
     <Modal scrollable size="lg" show={show} onHide={handleClose}>
@@ -134,6 +134,11 @@ const EditPayment = ({ payment, isSupervisor = false, onHide }) => {
               <div className="col-md-12 d-flex justify-content-end my-3">
                 <button
                   disabled={isLoading}
+                  onClick={() => {
+                    setIsLoading(true);
+                    router.push(`/generate_insurance/${payment.transID}`);
+                    setIsLoading(false);
+                  }}
                   className="btn-dash btn-primary border-0"
                 >
                   <Setting size={20} />

@@ -30,6 +30,7 @@ const NewTo = ({ newTo, onHide }) => {
       driverLicense: null,
       vin: "",
       chasis: "",
+      vName: "",
       isSupervisor: false,
       isTaxOfficer: true,
       hasPassword: false,

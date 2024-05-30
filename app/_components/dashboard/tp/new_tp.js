@@ -26,6 +26,7 @@ const NewTp = ({ newTp, onHide }) => {
   const [driverLicense, setDriverLicense] = useState(null);
   const [vin, setVin] = useState(null);
   const [chasis, setChasis] = useState(null);
+  const [vName, setVName] = useState("");
 
   const onAddTp = async (e) => {
     e.preventDefault();
@@ -42,6 +43,7 @@ const NewTp = ({ newTp, onHide }) => {
       driverLicense: driverLicense,
       vin: vin,
       chasis: chasis,
+      vName: vName,
       isTaxPayer: true,
       isSupervisor: false,
       isTaxOfficer: false,
@@ -259,6 +261,20 @@ const NewTp = ({ newTp, onHide }) => {
                     />
                   </div>
                 </div>
+              </div>
+
+              <div className="col-12 mb-3">
+                <label className="form-label" htmlFor="vName">
+                  Vehicle Name
+                </label>
+                <input
+                  type="text"
+                  required
+                  className="form-control cus-form-control rounded-2"
+                  id="vName"
+                  placeholder="eg: Toyota Collora"
+                  onChange={(e) => setVName(e.target.value)}
+                />
               </div>
             </div>
 

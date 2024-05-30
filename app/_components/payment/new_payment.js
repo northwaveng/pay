@@ -6,19 +6,14 @@ import { useEffect, useState } from "react";
 import Loader from "@/app/_components/loader";
 import { toast } from "react-toastify";
 import {
-  Timestamp,
   collection,
   doc,
   onSnapshot,
   orderBy,
   query,
-  serverTimestamp,
-  setDoc,
-  updateDoc,
   where,
 } from "firebase/firestore";
 import { db } from "@/app/_components/firebase/fire_config";
-import { v4 } from "uuid";
 import { selectFormStyle, selectFormTheme } from "@/app/_utils/input_style";
 import ReactSelect from "react-select";
 import capitalize from "@/app/_utils/capitalize";
@@ -81,15 +76,17 @@ const NewPayment = ({ newPayment, onHide }) => {
 
     paystackPay({
       amount: amount,
-      email: tp.email,
+      email: to.email,
       currency: "NGN",
       channels: ["card"],
-      callback_url: `${process.env.PAYMENT_STATUS_TEST_DOMAIN}payment/status`,
+      callback_url: `${process.env.NEXT_PUBLIC_PAYMENT_STATUS_TEST_DOMAIN}payment/status`,
       metadata: {
         total: `${parseInt(transInfo.total) + 1}`,
         totalPaid: totalPaid,
         tp: tp.email,
         to: authUser.email,
+        vin: tp.vin,
+        vName: tp.vName,
         amount: amount,
         holder: tp.name.toUpperCase(),
         commence: commenceTimestamp ? commenceTimestamp : null,

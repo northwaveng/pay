@@ -26,6 +26,7 @@ const EditTp = ({ tp, onHide }) => {
   const [driverLicense, setDriverLicense] = useState(null);
   const [vin, setVin] = useState(null);
   const [chasis, setChasis] = useState(null);
+  const [vName, setVName] = useState("");
 
   const onUpdateUser = async (e) => {
     e.preventDefault();
@@ -41,6 +42,7 @@ const EditTp = ({ tp, onHide }) => {
         ? driverLicense.toLowerCase()
         : tp.driverLicense,
       vin: vin ? vin.toLowerCase() : tp.vin,
+      vin: vName ? vName.toLowerCase() : tp.vName,
       chasis: chasis ? chasis.toLowerCase() : tp.chasis,
       state: state.length > 0 ? state.state.toLowerCase() : tp.state,
       lga: lga.length > 0 ? lga.toLowerCase() : tp.lga,
@@ -136,7 +138,7 @@ const EditTp = ({ tp, onHide }) => {
                   type="text"
                   className="form-control cus-form-control rounded-2"
                   id="location"
-                  placeholder={tp.location}
+                  placeholder={capitalize(tp.location)}
                   onChange={(e) => setLocation(e.target.value)}
                 />
               </div>
@@ -248,6 +250,19 @@ const EditTp = ({ tp, onHide }) => {
                     />
                   </div>
                 </div>
+              </div>
+
+              <div className="col-12 mb-3">
+                <label className="form-label" htmlFor="vName">
+                  Vehicle Name
+                </label>
+                <input
+                  type="text"
+                  className="form-control cus-form-control rounded-2"
+                  id="vName"
+                  placeholder={capitalize(tp.vName)}
+                  onChange={(e) => setVName(e.target.value)}
+                />
               </div>
             </div>
 

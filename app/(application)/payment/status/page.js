@@ -4,7 +4,6 @@ import { verifyPaystackTransaction } from "@/app/actions/actions";
 import { InfoCircle, Timer, Verify } from "iconsax-react";
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import { v4 } from "uuid";
 import {
   Timestamp,
   collection,
@@ -64,8 +63,6 @@ const PaymentStatus = ({ searchParams }) => {
       },
       createdOn: serverTimestamp(),
     };
-
-    console.log(metadata);
 
     setDoc(doc(collRef, ref), userDoc)
       .then(() => {

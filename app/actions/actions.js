@@ -24,8 +24,8 @@ export const paystackPay = async ({
       amount: amount * 100,
       currency: currency,
       channels: channels,
-      callback_url: callback_url,
       metadata: metadata,
+      callback_url: callback_url,
     }),
   };
 
