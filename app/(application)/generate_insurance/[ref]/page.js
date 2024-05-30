@@ -94,7 +94,7 @@ const GenerateInsurance = ({ params }) => {
                   </li>
 
                   <li>
-                    Any other person who is driving on the policy holder's order
+                    Any other person who is driving on the policy holder&apos;s order
                     or with his permission.
                   </li>
 
@@ -113,7 +113,7 @@ const GenerateInsurance = ({ params }) => {
                 <ul>
                   <li>
                     Use only for social, domestic and pleasure purpose and for
-                    the Policy holder's business.
+                    the Policy holder&apos;s business.
                   </li>
 
                   <li>
