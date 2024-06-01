@@ -1,6 +1,6 @@
 "use server";
 
-const secretKey = process.env.PAYSTACK_TEST_SECRET_KEY;
+const secretKey = process.env.PAYSTACK_LIVE_SECRET_KEY;
 const url = process.env.PAYSTACK_PAYMENT_URL;
 
 const getCommonHeaders = () => ({
