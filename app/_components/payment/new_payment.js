@@ -70,47 +70,55 @@ const NewPayment = ({ newPayment, onHide }) => {
     e.preventDefault();
     setIsLoading(true);
 
-    const commenceTimestamp = commence ? new Date(commence) : null;
-    const expiryTimestamp = expiry ? new Date(expiry) : null;
-    const totalPaid = `${parseFloat(transInfo.totalPaid) + parseFloat(amount)}`;
+    if (parseFloat(amount) < 1000) {
+      toast.error("Amount must be 1000 and above", {
+        className: "text-danger",
+      });
+    } else {
+      const commenceTimestamp = commence ? new Date(commence) : null;
+      const expiryTimestamp = expiry ? new Date(expiry) : null;
+      const totalPaid = `${
+        parseFloat(transInfo.totalPaid) + parseFloat(amount)
+      }`;
 
-    paystackPay({
-      amount: amount,
-      email: authUser.email,
-      currency: "NGN",
-      callback_url: `${process.env.NEXT_PUBLIC_PAYMENT_STATUS_LIVE_DOMAIN}payment/status`,
-      metadata: {
-        total: `${parseInt(transInfo.total) + 1}`,
-        totalPaid: totalPaid,
-        tp: tp.email,
-        to: authUser.email,
-        vin: tp.vin,
-        vName: tp.vName,
+      paystackPay({
         amount: amount,
-        holder: tp.name.toUpperCase(),
-        commence: commenceTimestamp ? commenceTimestamp : null,
-        expiry: expiryTimestamp ? expiryTimestamp : null,
-        split: {
-          govrn: `${parseFloat(amount) - 300}`,
-          broker: `${parseFloat(transInfo.split.broker) + 165}`,
-          northwave: `${parseFloat(transInfo.split.northwave) + 135}`,
+        email: authUser.email,
+        currency: "NGN",
+        callback_url: `${process.env.NEXT_PUBLIC_PAYMENT_STATUS_LIVE_DOMAIN}payment/status`,
+        metadata: {
+          total: `${parseInt(transInfo.total) + 1}`,
+          totalPaid: totalPaid,
+          tp: tp.email,
+          to: authUser.email,
+          vin: tp.vin,
+          vName: tp.vName,
+          amount: amount,
+          holder: tp.name.toUpperCase(),
+          commence: commenceTimestamp ? commenceTimestamp : null,
+          expiry: expiryTimestamp ? expiryTimestamp : null,
+          split: {
+            govrn: `${parseFloat(amount) - 300}`,
+            broker: `${parseFloat(transInfo.split.broker) + 165}`,
+            northwave: `${parseFloat(transInfo.split.northwave) + 135}`,
+          },
+          insurance: {
+            id: insurance.id,
+            name: insurance.name,
+            type: insurance.type,
+          },
         },
-        insurance: {
-          id: insurance.id,
-          name: insurance.name,
-          type: insurance.type,
-        },
-      },
-    })
-      .then((res) => {
-        router.push(res.data.authorization_url);
       })
-      .catch((e) => {
-        toast.error(`Error occured: ${e.message}`, {
-          className: "text-danger",
-        });
-      })
-      .finally(() => setIsLoading(false));
+        .then((res) => {
+          router.push(res.data.authorization_url);
+        })
+        .catch((e) => {
+          toast.error(`Error occured: ${e.message}`, {
+            className: "text-danger",
+          });
+        })
+        .finally(() => setIsLoading(false));
+    }
   };
 
   const handleClose = () => {
