@@ -22,21 +22,17 @@ const PaymentStatus = () => {
   const ref = searchQ.get("reference");
 
   useEffect(() => {
-    console.log(ref);
-
     if (ref) {
       verifyPaystackTransaction({
         ref: ref,
       })
         .then((res) => {
-          console.log(res);
-
-          // if (res.status === true && res.data.status === "success") {
-          //   setIsSuccess(true);
-          //   onAddPayment(ref, res.data.metadata);
-          // } else {
-          //   setIsSuccess(false);
-          // }
+          if (res.status === true && res.data.status === "success") {
+            setIsSuccess(true);
+            onAddPayment(ref, res.data.metadata);
+          } else {
+            setIsSuccess(false);
+          }
         })
         .catch((e) => {
           toast.error(`Error occurred: ${e.message}`, {
