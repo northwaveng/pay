@@ -74,6 +74,7 @@ const NewPayment = ({ newPayment, onHide }) => {
       toast.error("Amount must be 1000 and above", {
         className: "text-danger",
       });
+      setIsLoading(false);
     } else {
       const commenceTimestamp = commence ? new Date(commence) : null;
       const expiryTimestamp = expiry ? new Date(expiry) : null;
