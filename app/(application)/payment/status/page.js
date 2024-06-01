@@ -18,26 +18,28 @@ import Link from "next/link";
 const PaymentStatus = ({ searchParams }) => {
   const [isSuccess, setIsSuccess] = useState(null);
 
-  useEffect(() => {
-    if (searchParams?.reference && searchParams.trxref) {
-      verifyPaystackTransaction({
-        ref: searchParams.reference,
-      })
-        .then((res) => {
-          if (res.status === true && res.data.status === "success") {
-            setIsSuccess(true);
-            onAddPayment(searchParams.reference, res.data.metadata);
-          } else {
-            setIsSuccess(false);
-          }
-        })
-        .catch((e) => {
-          toast.error(`Error occurred: ${e.message}`, {
-            className: "text-danger",
-          });
-        });
-    }
-  }, [searchParams]);
+  // useEffect(() => {
+  //   if (searchParams?.reference && searchParams?.trxref) {
+  //     verifyPaystackTransaction({
+  //       ref: searchParams.reference,
+  //     })
+  //       .then((res) => {
+  //         if (res.status === true && res.data.status === "success") {
+  //           setIsSuccess(true);
+  //           onAddPayment(searchParams.reference, res.data.metadata);
+  //         } else {
+  //           setIsSuccess(false);
+  //         }
+  //       })
+  //       .catch((e) => {
+  //         toast.error(`Error occurred: ${e.message}`, {
+  //           className: "text-danger",
+  //         });
+  //       });
+  //   }
+  // }, [searchParams]);
+
+  console.log(searchParams?.reference && searchParams?.trxref);
 
   const onAddPayment = (ref, metadata) => {
     const collRef = collection(db, "transactions");
