@@ -81,6 +81,9 @@ const NewPayment = ({ newPayment, onHide }) => {
       const totalPaid = `${
         parseFloat(transInfo.totalPaid) + parseFloat(amount)
       }`;
+      const brokerAmount = parseFloat(amount) * 0.165;
+      const northwaveAmount = parseFloat(amount) * 0.135;
+      const removeFromGovrn = brokerAmount + northwaveAmount;
 
       paystackPay({
         amount: amount,
@@ -99,9 +102,9 @@ const NewPayment = ({ newPayment, onHide }) => {
           commence: commenceTimestamp ? commenceTimestamp : null,
           expiry: expiryTimestamp ? expiryTimestamp : null,
           split: {
-            govrn: `${parseFloat(amount) - 300}`,
-            broker: `${parseFloat(transInfo.split.broker) + 165}`,
-            northwave: `${parseFloat(transInfo.split.northwave) + 135}`,
+            govrn: `${removeFromGovrn}`,
+            broker: `${brokerAmount}`,
+            northwave: `${northwaveAmount}`,
           },
           insurance: {
             id: insurance.id,
