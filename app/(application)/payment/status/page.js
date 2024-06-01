@@ -14,23 +14,26 @@ import {
 } from "firebase/firestore";
 import { db } from "@/app/_components/firebase/fire_config";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
-const PaymentStatus = ({ searchParams }) => {
+const PaymentStatus = () => {
   const [isSuccess, setIsSuccess] = useState(null);
+  const searchQ = useSearchParams();
+  const ref = searchQ.get("reference");
 
   useEffect(() => {
-    console.log(searchParams);
+    console.log(ref);
 
-    if (searchParams?.reference && searchParams?.trxref) {
-
+    if (ref) {
       verifyPaystackTransaction({
-        ref: searchParams.reference,
+        ref: ref,
       })
         .then((res) => {
+          console.log(res);
 
           // if (res.status === true && res.data.status === "success") {
           //   setIsSuccess(true);
-          //   onAddPayment(searchParams.reference, res.data.metadata);
+          //   onAddPayment(ref, res.data.metadata);
           // } else {
           //   setIsSuccess(false);
           // }
@@ -41,7 +44,7 @@ const PaymentStatus = ({ searchParams }) => {
           });
         });
     }
-  }, [searchParams]);
+  }, [ref]);
 
   const onAddPayment = (ref, metadata) => {
     const collRef = collection(db, "transactions");
