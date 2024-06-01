@@ -19,8 +19,9 @@ const PaymentStatus = ({ searchParams }) => {
   const [isSuccess, setIsSuccess] = useState(null);
 
   useEffect(() => {
+    console.log(searchParams.reference);
+
     if (searchParams?.reference && searchParams?.trxref) {
-      console.log(searchParams.reference);
 
       verifyPaystackTransaction({
         ref: searchParams.reference,
