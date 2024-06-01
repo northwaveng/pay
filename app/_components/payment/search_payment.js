@@ -4,6 +4,7 @@ import { useRef, useState } from "react";
 import { db } from "@/app/_components/firebase/fire_config";
 import {
   collection,
+  getDocs,
   limit,
   onSnapshot,
   orderBy,
@@ -26,17 +27,44 @@ const SearchPayment = ({ selectedSearchPayment }) => {
     setSearchQ(value);
 
     if (value.length > 0) {
-      onSnapshot(
-        query(
-          collection(db, "transactions"),
-          where("transID", ">=", value.toLowerCase()),
-          where("transID", "<=", value.toLowerCase() + "\uf8ff"),
-          orderBy("transID"),
-          limit(10)
-        ),
-        (snap) => setSearchR(snap.docs.map((doc) => doc.data()))
+      // Query for transID
+      const transIDQuery = query(
+        collection(db, "transactions"),
+        where("transID", ">=", value.toLowerCase()),
+        where("transID", "<=", value.toLowerCase() + "\uf8ff"),
+        orderBy("transID"),
+        limit(10)
       );
-    } else setSearchR([]);
+
+      // Query for holder
+      const holderQuery = query(
+        collection(db, "transactions"),
+        where("holder", ">=", value.toUpperCase()),
+        where("holder", "<=", value.toUpperCase() + "\uf8ff"),
+        orderBy("holder"),
+        limit(10)
+      );
+
+      const transIDSnapshot = await getDocs(transIDQuery);
+      const holderSnapshot = await getDocs(holderQuery);
+
+      const transIDResults = transIDSnapshot.docs.map((doc) => doc.data());
+      const holderResults = holderSnapshot.docs.map((doc) => doc.data());
+
+      const combinedResults = [...transIDResults, ...holderResults].reduce(
+        (acc, curr) => {
+          if (!acc.some((doc) => doc.id === curr.id)) {
+            acc.push(curr);
+          }
+          return acc;
+        },
+        []
+      );
+
+      setSearchR(combinedResults);
+    } else {
+      setSearchR([]);
+    }
   };
 
   return (
@@ -47,7 +75,7 @@ const SearchPayment = ({ selectedSearchPayment }) => {
           isMobile ? "" : "me-4"
         }`}
         id="searchQ"
-        placeholder="search by ID"
+        placeholder="search by ID or Name"
         ref={searchRef}
         onChange={onSearch}
         onPaste={onSearch}
@@ -68,7 +96,7 @@ const SearchPayment = ({ selectedSearchPayment }) => {
                         "mb-2"
                       }`}
                     >
-                      {truncate(capitalize(result.transID), 15)}
+                      {truncate(result.transID, 15)}
 
                       <button
                         onClick={() => {

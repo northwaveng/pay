@@ -1,6 +1,6 @@
 "use client";
 
-import { AddCircle, ArrowDown2, ArrowUp2, Trash } from "iconsax-react";
+import { AddCircle, Trash } from "iconsax-react";
 import SearchTp from "@/app/_components/dashboard/tp/search_tp";
 import { truncate } from "@/app/_utils/truncate";
 import capitalize from "@/app/_utils/capitalize";
@@ -15,7 +15,6 @@ import {
 import { db } from "@/app/_components/firebase/fire_config";
 import Loader from "@/app/_components/loader";
 import { formatTimestamp } from "@/app/_utils/format_timestamp";
-import getFieldName from "@/app/_utils/get_field_name";
 import { useMediaQuery } from "@chakra-ui/react";
 
 const Tp = ({ selectedTp, newTp }) => {
@@ -23,8 +22,6 @@ const Tp = ({ selectedTp, newTp }) => {
   const [isLoadingTp, setIsLoadingTp] = useState(true);
   const [tps, setTps] = useState([]);
   const [totalTps, setTotalTps] = useState(0);
-  const [sortedTps, setSortedTps] = useState([]);
-  const [sortingBtn, setSortingBtn] = useState("");
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
@@ -42,20 +39,6 @@ const Tp = ({ selectedTp, newTp }) => {
 
     return () => unsubscribe();
   }, []);
-
-  const changeSortingTp = (field, isAsc) => {
-    const dataTpSort = sortedTps.length > 0 ? [...sortedTps] : [...tps];
-
-    const sorted = dataTpSort.sort((_a, _b) => {
-      const a = getFieldName(_a, field);
-      const b = getFieldName(_b, field);
-
-      return isAsc ? a - b : b - a;
-    });
-
-    setSortedTps(sorted);
-    setSortingBtn(`${field}${isAsc}`);
-  };
 
   const renderTableRow = (tp, index) => (
     <tr key={index} className="pe-active" onClick={() => selectedTp(tp)}>
@@ -127,68 +110,16 @@ const Tp = ({ selectedTp, newTp }) => {
                 <table className="table table-hover">
                   <thead>
                     <tr className="thead-dash">
-                      <th scope="col">
-                        <div className="d-flex align-items-center">
-                          Name
-                          <div className="d-flex flex-column ms-1">
-                            <ArrowUp2
-                              size={12}
-                              onClick={() => changeSortingTp("name", true)}
-                              className={
-                                sortingBtn === `name${true}`
-                                  ? "text-text pe-active"
-                                  : "text-muted pe-active"
-                              }
-                            />
-                            <ArrowDown2
-                              size={12}
-                              onClick={() => changeSortingTp("name", false)}
-                              className={
-                                sortingBtn === `name${false}`
-                                  ? "text-text pe-active"
-                                  : "text-muted pe-active"
-                              }
-                            />
-                          </div>
-                        </div>
-                      </th>
+                      <th scope="col">Name</th>
                       <th scope="col">Phone Number</th>
                       <th scope="col">LGA</th>
                       <th scope="col">Address</th>
-                      <th scope="col">
-                        <div className="d-flex align-items-center">
-                          Created On
-                          <div className="d-flex flex-column ms-1">
-                            <ArrowUp2
-                              size={12}
-                              onClick={() => changeSortingTp("createdOn", true)}
-                              className={
-                                sortingBtn === `createdOn${true}`
-                                  ? "text-text pe-active"
-                                  : "text-muted pe-active"
-                              }
-                            />
-                            <ArrowDown2
-                              size={12}
-                              onClick={() =>
-                                changeSortingTp("createdOn", false)
-                              }
-                              className={
-                                sortingBtn === `createdOn${false}`
-                                  ? "text-text pe-active"
-                                  : "text-muted pe-active"
-                              }
-                            />
-                          </div>
-                        </div>
-                      </th>
+                      <th scope="col">Created On</th>
                     </tr>
                   </thead>
 
                   <tbody>
-                    {(sortedTps.length > 0 ? sortedTps : tps).map((tp, index) =>
-                      renderTableRow(tp, index)
-                    )}
+                    {tps.map((tp, index) => renderTableRow(tp, index))}
                   </tbody>
                 </table>
               </div>

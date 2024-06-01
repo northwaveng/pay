@@ -37,13 +37,12 @@ const EditTp = ({ tp, onHide }) => {
       location: location.length > 0 ? location.toLowerCase() : tp.location,
       phoneNumber:
         phoneNumber.length > 0 ? phoneNumber.toLowerCase() : tp.phoneNumber,
-      nin: nin ? nin.toLowerCase() : tp.nin,
-      driverLicense: driverLicense
-        ? driverLicense.toLowerCase()
-        : tp.driverLicense,
-      vin: vin ? vin.toLowerCase() : tp.vin,
-      vin: vName ? vName.toLowerCase() : tp.vName,
-      chasis: chasis ? chasis.toLowerCase() : tp.chasis,
+      nin: nin !== null ? nin.toLowerCase() : tp.nin,
+      driverLicense:
+        driverLicense !== null ? driverLicense.toLowerCase() : tp.driverLicense,
+      vin: vin !== null ? vin.toLowerCase() : tp.vin,
+      chasis: chasis !== null ? chasis.toLowerCase() : tp.chasis,
+      vName: vName.length > 0 ? vName.toLowerCase() : tp.vName,
       state: state.length > 0 ? state.state.toLowerCase() : tp.state,
       lga: lga.length > 0 ? lga.toLowerCase() : tp.lga,
     })
