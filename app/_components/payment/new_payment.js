@@ -76,7 +76,7 @@ const NewPayment = ({ newPayment, onHide }) => {
 
     paystackPay({
       amount: amount,
-      email: to.email,
+      email: authUser.email,
       currency: "NGN",
       channels: ["card"],
       callback_url: `${process.env.NEXT_PUBLIC_PAYMENT_STATUS_TEST_DOMAIN}payment/status`,
