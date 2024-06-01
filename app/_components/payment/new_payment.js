@@ -70,8 +70,8 @@ const NewPayment = ({ newPayment, onHide }) => {
     e.preventDefault();
     setIsLoading(true);
 
-    if (parseFloat(amount) < 1000) {
-      toast.error("Amount must be 1000 and above", {
+    if (parseFloat(amount) < 8000) {
+      toast.error("Amount must be 8,000.00 and above", {
         className: "text-danger",
       });
       setIsLoading(false);
