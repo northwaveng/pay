@@ -98,6 +98,7 @@ const NewPayment = ({ newPayment, onHide }) => {
         amount: amount,
         email: authUser.email,
         currency: "NGN",
+        subaccount: process.env.NEXT_PUBLIC_PAYMENT_SUBACCOUNT,
         callback_url: `${process.env.NEXT_PUBLIC_PAYMENT_STATUS_TEST_DOMAIN}payment/status`,
         metadata: {
           tp: tp.email,

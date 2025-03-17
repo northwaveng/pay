@@ -13,6 +13,7 @@ export const paystackPay = async ({
   email,
   currency,
   channels,
+  subaccount,
   callback_url,
   metadata,
 }) => {
@@ -24,6 +25,7 @@ export const paystackPay = async ({
       amount: amount * 100,
       currency: currency,
       channels: channels,
+      subaccount: subaccount,
       metadata: metadata,
       callback_url: callback_url,
     }),
