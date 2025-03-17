@@ -121,7 +121,7 @@ const EditTo = ({ to, onHide }) => {
                 </label>
                 <input
                   type="email"
-                  disabled
+                  readOnly
                   className="form-control cus-form-control rounded-2"
                   id="email"
                   placeholder={to.email}

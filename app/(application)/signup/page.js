@@ -109,7 +109,7 @@ const SignupOldCustomer = ({ searchParams }) => {
               <input
                 type="email"
                 required
-                disabled
+                readOnly
                 className="form-control cus-form-control rounded-2"
                 id="emailAddress"
                 placeholder={email}

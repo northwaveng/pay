@@ -11,6 +11,7 @@ import { toNGN } from "@/app/_utils/to_currency";
 import { toast } from "react-toastify";
 import { verifyPaystackTransaction } from "@/app/actions/actions";
 import { useRouter } from "next/navigation";
+import copyToClipboard from "@/app/_utils/copy_clipboard";
 
 const EditPayment = ({ payment, isSupervisor = false, onHide }) => {
   const [show, setShow] = useState(!!payment);
@@ -53,10 +54,13 @@ const EditPayment = ({ payment, isSupervisor = false, onHide }) => {
                 </label>
                 <input
                   type="text"
-                  disabled
+                  readOnly
                   className="form-control cus-form-control rounded-2"
                   id="transID"
                   placeholder={payment.transID}
+                  onClick={() =>
+                    copyToClipboard(payment.transID, "Transaction id copied")
+                  }
                 />
               </div>
 
@@ -66,10 +70,13 @@ const EditPayment = ({ payment, isSupervisor = false, onHide }) => {
                 </label>
                 <input
                   type="text"
-                  disabled
+                  readOnly
                   className="form-control cus-form-control rounded-2"
                   id="holder"
                   placeholder={payment.holder}
+                  onClick={() =>
+                    copyToClipboard(payment.holder, "Holder copied")
+                  }
                 />
               </div>
 
@@ -79,10 +86,13 @@ const EditPayment = ({ payment, isSupervisor = false, onHide }) => {
                 </label>
                 <input
                   type="text"
-                  disabled
+                  readOnly
                   className="form-control cus-form-control rounded-2"
                   id="amount"
                   placeholder={toNGN(payment.amount)}
+                  onClick={() =>
+                    copyToClipboard(payment.amount, "Amount copied")
+                  }
                 />
               </div>
             </div>
@@ -94,7 +104,7 @@ const EditPayment = ({ payment, isSupervisor = false, onHide }) => {
                 </label>
                 <input
                   type="text"
-                  disabled
+                  readOnly
                   className="form-control cus-form-control rounded-2"
                   id="commence"
                   placeholder={formatTimestamp(payment.commence)}
@@ -107,7 +117,7 @@ const EditPayment = ({ payment, isSupervisor = false, onHide }) => {
                 </label>
                 <input
                   type="text"
-                  disabled
+                  readOnly
                   className="form-control cus-form-control rounded-2"
                   id="expiry"
                   placeholder={formatTimestamp(payment.expiry)}
@@ -120,12 +130,20 @@ const EditPayment = ({ payment, isSupervisor = false, onHide }) => {
                 </label>
                 <input
                   type="text"
-                  disabled
+                  readOnly
                   className="form-control cus-form-control rounded-2"
                   id="insurance"
                   placeholder={capitalize(
                     `${payment.insurance.name} - ${payment.insurance.type}`
                   )}
+                  onClick={() =>
+                    copyToClipboard(
+                      capitalize(
+                        `${payment.insurance.name} - ${payment.insurance.type}`
+                      ),
+                      "Insurance type copied"
+                    )
+                  }
                 />
               </div>
             </div>

@@ -166,7 +166,7 @@ const NewPayment = ({ newPayment, onHide }) => {
                     </label>
                     <input
                       type="text"
-                      disabled
+                      readOnly
                       className="form-control cus-form-control rounded-2"
                       id="holder"
                       placeholder={tp.name.toUpperCase()}

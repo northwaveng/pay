@@ -109,7 +109,7 @@ const EditTp = ({ tp, onHide }) => {
                 </label>
                 <input
                   type="email"
-                  disabled
+                  readOnly
                   className="form-control cus-form-control rounded-2"
                   id="email"
                   placeholder={tp.email}
