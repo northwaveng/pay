@@ -183,7 +183,11 @@ const NewPayment = ({ newPayment, onHide }) => {
                       className="form-control cus-form-control rounded-2"
                       id="amount"
                       placeholder="eg: 10000.00"
-                      onChange={(e) => setAmount(e.target.value)}
+                      onChange={(e) => {
+                        const v = e.target.value;
+                        const newV = v.replaceAll(",","");
+                        setAmount(newV);
+                      }}
                       onKeyDown={intFloatOnly}
                     />
                   </div>
