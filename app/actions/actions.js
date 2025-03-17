@@ -14,6 +14,7 @@ export const paystackPay = async ({
   currency,
   channels,
   subaccount,
+  bearer,
   callback_url,
   metadata,
 }) => {
@@ -26,6 +27,7 @@ export const paystackPay = async ({
       currency: currency,
       channels: channels,
       subaccount: subaccount,
+      bearer: bearer,
       metadata: metadata,
       callback_url: callback_url,
     }),

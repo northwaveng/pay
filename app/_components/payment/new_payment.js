@@ -99,6 +99,7 @@ const NewPayment = ({ newPayment, onHide }) => {
         email: authUser.email,
         currency: "NGN",
         subaccount: process.env.NEXT_PUBLIC_PAYMENT_SUBACCOUNT,
+        bearer: "subaccount",
         callback_url: `${process.env.NEXT_PUBLIC_PAYMENT_STATUS_TEST_DOMAIN}payment/status`,
         metadata: {
           tp: tp.email,
@@ -135,7 +136,6 @@ const NewPayment = ({ newPayment, onHide }) => {
           });
         })
         .finally(() => setIsLoading(false));
-
     }
   };
 
