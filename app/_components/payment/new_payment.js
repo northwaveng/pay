@@ -88,10 +88,14 @@ const NewPayment = ({ newPayment, onHide }) => {
       const govrnAmount = amountAfterCut - (brokerAmount + northwaveAmount);
 
       const totalPaid = `${parseFloat(transInfo.totalPaid) + floatAmount}`;
-      const totalSplitGovrn = `${parseFloat(transInfo.govrn) + govrnAmount}`;
-      const totalSplitBroker = `${parseFloat(transInfo.broker) + brokerAmount}`;
+      const totalSplitGovrn = `${
+        parseFloat(transInfo.split.govrn) + govrnAmount
+      }`;
+      const totalSplitBroker = `${
+        parseFloat(transInfo.split.broker) + brokerAmount
+      }`;
       const totalSplitNorthwave = `${
-        parseFloat(transInfo.northwave) + northwaveAmount
+        parseFloat(transInfo.split.northwave) + northwaveAmount
       }`;
 
       paystackPay({
