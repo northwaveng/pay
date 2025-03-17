@@ -80,7 +80,7 @@ const NewPayment = ({ newPayment, onHide }) => {
       const commenceTimestamp = commence ? new Date(commence) : null;
       const expiryTimestamp = expiry ? new Date(expiry) : null;
 
-      const paystackCut = payment.amount * 0.01 + 100;
+      const paystackCut = floatAmount * 0.01 + 100;
       const amountAfterCut = floatAmount - paystackCut;
 
       const brokerAmount = amountAfterCut * 0.165;
