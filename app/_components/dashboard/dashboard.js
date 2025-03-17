@@ -164,7 +164,7 @@ const Dashboard = () => {
                   {isTablet ? (
                     <small className="m-0 text-muted">Transactions</small>
                   ) : (
-                    <p className="m-0 text-muted">Total Transactions</p>
+                    <p className="m-0 text-muted">Transactions</p>
                   )}
                 </div>
               </div>
