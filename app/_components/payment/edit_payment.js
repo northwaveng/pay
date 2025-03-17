@@ -114,10 +114,8 @@ const EditPayment = ({ payment, isSupervisor = false, onHide }) => {
                   }
                 />
               </div>
-            </div>
 
-            <div className="col-md-6">
-              <div className="mt-2 mb-3">
+              <div className="mb-3">
                 <label className="form-label" htmlFor="brokerAmount">
                   Broker Amount
                 </label>
@@ -131,6 +129,46 @@ const EditPayment = ({ payment, isSupervisor = false, onHide }) => {
                     copyToClipboard(
                       payment.split.broker,
                       "Broker amount copied"
+                    )
+                  }
+                />
+              </div>
+            </div>
+
+            <div className="col-md-6">
+              <div className="mt-2 mb-3">
+                <label className="form-label" htmlFor="bankFee">
+                  Bank Fees (paystack)
+                </label>
+                <input
+                  type="text"
+                  readOnly
+                  className="form-control cus-form-control rounded-2"
+                  id="bankFee"
+                  placeholder={toNGN(parseFloat(payment.amount) * 0.015 + 100)}
+                  onClick={() =>
+                    copyToClipboard(
+                      payment.amount,
+                      "Bank fees (paystack) copied"
+                    )
+                  }
+                />
+              </div>
+
+              <div className="mb-3">
+                <label className="form-label" htmlFor="softwareFee">
+                  Software Fee
+                </label>
+                <input
+                  type="text"
+                  readOnly
+                  className="form-control cus-form-control rounded-2"
+                  id="softwareFee"
+                  placeholder={toNGN(payment.split.northwave)}
+                  onClick={() =>
+                    copyToClipboard(
+                      payment.split.northwave,
+                      "Software fee copied"
                     )
                   }
                 />
