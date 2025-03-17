@@ -79,9 +79,13 @@ const NewPayment = ({ newPayment, onHide }) => {
     } else {
       const commenceTimestamp = commence ? new Date(commence) : null;
       const expiryTimestamp = expiry ? new Date(expiry) : null;
-      const brokerAmount = floatAmount * 0.165;
-      const northwaveAmount = floatAmount * 0.135;
-      const govrnAmount = floatAmount - (brokerAmount + northwaveAmount);
+
+      const paystackCut = payment.amount * 0.01 + 100;
+      const amountAfterCut = floatAmount - paystackCut;
+
+      const brokerAmount = amountAfterCut * 0.165;
+      const northwaveAmount = amountAfterCut * 0.135;
+      const govrnAmount = amountAfterCut - (brokerAmount + northwaveAmount);
 
       const totalPaid = `${parseFloat(transInfo.totalPaid) + floatAmount}`;
       const totalSplitGovrn = `${
@@ -100,8 +104,6 @@ const NewPayment = ({ newPayment, onHide }) => {
         currency: "NGN",
         callback_url: `${process.env.NEXT_PUBLIC_PAYMENT_STATUS_TEST_DOMAIN}payment/status`,
         metadata: {
-          total: `${parseInt(transInfo.total) + 1}`,
-          totalPaid: totalPaid,
           tp: tp.email,
           to: authUser.email,
           vin: tp.vin,
@@ -120,6 +122,8 @@ const NewPayment = ({ newPayment, onHide }) => {
             name: insurance.name,
             type: insurance.type,
           },
+          total: `${parseInt(transInfo.total) + 1}`,
+          totalPaid: totalPaid,
           totalSplitGovrn: `${totalSplitGovrn}`,
           totalSplitBroker: `${totalSplitBroker}`,
           totalSplitNorthwave: `${totalSplitNorthwave}`,

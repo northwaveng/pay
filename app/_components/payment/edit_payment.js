@@ -95,10 +95,48 @@ const EditPayment = ({ payment, isSupervisor = false, onHide }) => {
                   }
                 />
               </div>
+
+              <div className="mb-3">
+                <label className="form-label" htmlFor="govrnAmount">
+                  Government Amount
+                </label>
+                <input
+                  type="text"
+                  readOnly
+                  className="form-control cus-form-control rounded-2"
+                  id="govrnAmount"
+                  placeholder={toNGN(payment.split.govrn - paystackCut)}
+                  onClick={() =>
+                    copyToClipboard(
+                      payment.split.govrn,
+                      "Government amount copied"
+                    )
+                  }
+                />
+              </div>
             </div>
 
             <div className="col-md-6">
               <div className="mt-2 mb-3">
+                <label className="form-label" htmlFor="brokerAmount">
+                  Broker Amount
+                </label>
+                <input
+                  type="text"
+                  readOnly
+                  className="form-control cus-form-control rounded-2"
+                  id="brokerAmount"
+                  placeholder={toNGN(payment.split.broker)}
+                  onClick={() =>
+                    copyToClipboard(
+                      payment.split.broker,
+                      "Broker amount copied"
+                    )
+                  }
+                />
+              </div>
+
+              <div className="mb-3">
                 <label className="form-label" htmlFor="commence">
                   Commence On
                 </label>
