@@ -70,7 +70,8 @@ const NewPayment = ({ newPayment, onHide }) => {
     e.preventDefault();
     setIsLoading(true);
 
-    if (parseFloat(amount) < 8000) {
+    const floatAmount = parseFloat(amount);
+    if (floatAmount < 8000) {
       toast.error("Amount must be 8,000.00 and above", {
         className: "text-danger",
       });
@@ -78,12 +79,20 @@ const NewPayment = ({ newPayment, onHide }) => {
     } else {
       const commenceTimestamp = commence ? new Date(commence) : null;
       const expiryTimestamp = expiry ? new Date(expiry) : null;
-      const totalPaid = `${
-        parseFloat(transInfo.totalPaid) + parseFloat(amount)
+      const brokerAmount = floatAmount * 0.165;
+      const northwaveAmount = floatAmount * 0.135;
+      const govrnAmount = floatAmount - (brokerAmount + northwaveAmount);
+
+      const totalPaid = `${parseFloat(transInfo.totalPaid) + floatAmount}`;
+      const totalSplitGovrn = `${
+        parseFloat(transInfo.govrnAmount) + govrnAmount
       }`;
-      const brokerAmount = parseFloat(amount) * 0.165;
-      const northwaveAmount = parseFloat(amount) * 0.135;
-      const removeFromGovrn = brokerAmount + northwaveAmount;
+      const totalSplitBroker = `${
+        parseFloat(transInfo.brokerAmount) + brokerAmount
+      }`;
+      const totalSplitNorthwave = `${
+        parseFloat(transInfo.northwaveAmount) + northwaveAmount
+      }`;
 
       paystackPay({
         amount: amount,
@@ -102,7 +111,7 @@ const NewPayment = ({ newPayment, onHide }) => {
           commence: commenceTimestamp ? commenceTimestamp : null,
           expiry: expiryTimestamp ? expiryTimestamp : null,
           split: {
-            govrn: `${removeFromGovrn}`,
+            govrn: `${govrnAmount}`,
             broker: `${brokerAmount}`,
             northwave: `${northwaveAmount}`,
           },
@@ -111,6 +120,9 @@ const NewPayment = ({ newPayment, onHide }) => {
             name: insurance.name,
             type: insurance.type,
           },
+          totalSplitGovrn: `${totalSplitGovrn}`,
+          totalSplitBroker: `${totalSplitBroker}`,
+          totalSplitNorthwave: `${totalSplitNorthwave}`,
         },
       })
         .then((res) => {
@@ -185,7 +197,7 @@ const NewPayment = ({ newPayment, onHide }) => {
                       placeholder="eg: 10000.00"
                       onChange={(e) => {
                         const v = e.target.value;
-                        const newV = v.replaceAll(",","");
+                        const newV = v.replaceAll(",", "");
                         setAmount(newV);
                       }}
                       onKeyDown={intFloatOnly}

@@ -60,6 +60,11 @@ const PaymentStatus = () => {
         metadata.expiry !== null
           ? Timestamp.fromDate(new Date(metadata.expiry))
           : null,
+      split: {
+        govrn: metadata.split.govrn,
+        broker: metadata.split.broker,
+        northwave: metadata.split.northwave,
+      },
       insurance: {
         id: metadata.insurance.id,
         name: metadata.insurance.name,
@@ -73,9 +78,9 @@ const PaymentStatus = () => {
         updateDoc(doc(db, "transactions", "info"), {
           total: metadata.total,
           totalPaid: metadata.totalPaid,
-          "split.govrn": metadata.split.govrn,
-          "split.broker": metadata.split.broker,
-          "split.northwave": metadata.split.northwave,
+          "split.govrn": metadata.totalSplitGovrn,
+          "split.broker": metadata.totalSplitBroker,
+          "split.northwave": metadata.totalSplitNorthwave,
         })
           .then(() => {})
           .catch((e) => {
