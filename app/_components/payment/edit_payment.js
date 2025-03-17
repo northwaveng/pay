@@ -105,7 +105,7 @@ const EditPayment = ({ payment, isSupervisor = false, onHide }) => {
                   readOnly
                   className="form-control cus-form-control rounded-2"
                   id="govrnAmount"
-                  placeholder={toNGN(payment.split.govrn - paystackCut)}
+                  placeholder={toNGN(payment.split.govrn)}
                   onClick={() =>
                     copyToClipboard(
                       payment.split.govrn,

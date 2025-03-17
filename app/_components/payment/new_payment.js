@@ -80,7 +80,7 @@ const NewPayment = ({ newPayment, onHide }) => {
       const commenceTimestamp = commence ? new Date(commence) : null;
       const expiryTimestamp = expiry ? new Date(expiry) : null;
 
-      const paystackCut = floatAmount * 0.01 + 100;
+      const paystackCut = floatAmount * 0.015 + 100;
       const amountAfterCut = floatAmount - paystackCut;
 
       const brokerAmount = amountAfterCut * 0.165;
@@ -88,14 +88,10 @@ const NewPayment = ({ newPayment, onHide }) => {
       const govrnAmount = amountAfterCut - (brokerAmount + northwaveAmount);
 
       const totalPaid = `${parseFloat(transInfo.totalPaid) + floatAmount}`;
-      const totalSplitGovrn = `${
-        parseFloat(transInfo.govrnAmount) + govrnAmount
-      }`;
-      const totalSplitBroker = `${
-        parseFloat(transInfo.brokerAmount) + brokerAmount
-      }`;
+      const totalSplitGovrn = `${parseFloat(transInfo.govrn) + govrnAmount}`;
+      const totalSplitBroker = `${parseFloat(transInfo.broker) + brokerAmount}`;
       const totalSplitNorthwave = `${
-        parseFloat(transInfo.northwaveAmount) + northwaveAmount
+        parseFloat(transInfo.northwave) + northwaveAmount
       }`;
 
       paystackPay({
@@ -138,6 +134,7 @@ const NewPayment = ({ newPayment, onHide }) => {
           });
         })
         .finally(() => setIsLoading(false));
+
     }
   };
 
