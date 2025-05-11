@@ -142,6 +142,7 @@ const NewDva = ({ newDva, onHide }) => {
         } else {
           const status = res.status;
           if (status) {
+            setIsLoading(false);
             toast.info(res.message);
           } else {
             setIsLoading(false);
