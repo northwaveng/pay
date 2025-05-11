@@ -50,7 +50,7 @@ const Dva = ({ selectedDva, newDva }) => {
   const renderTableRow = (dva, index) => (
     <tr key={index} className="pe-active" onClick={() => selectedDva(dva)}>
       <td className="align-middle">
-        {capitalize(truncate(dva.accountName, 30))}
+        {capitalize(truncate(dva.accountName.replaceAll("-", " "), 30))}
       </td>
       <td className="align-middle">{capitalize(dva.accountNumber)}</td>
       <td className="align-middle">{capitalize(dva.bankName)}</td>

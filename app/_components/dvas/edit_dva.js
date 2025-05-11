@@ -1,26 +1,26 @@
 "use client";
 
-import { truncate } from "@/app/_utils/truncate";
-import { CloseSquare, TickSquare } from "iconsax-react";
+import { Copy, TickSquare } from "iconsax-react";
 import { Modal } from "react-bootstrap";
 import { useState } from "react";
-import Loader from "@/app/_components/loader";
 import { toast } from "react-toastify";
 import capitalize from "@/app/_utils/capitalize";
+import PhoneInput from "react-phone-number-input";
+import copyToClipboard from "@/app/_utils/copy_clipboard";
 
 const EditDva = ({ dva, onHide }) => {
   const [show, setShow] = useState(!!dva);
 
   const onUpdateDva = async (e) => {
     e.preventDefault();
-
     toast.info("You can not update DVA information!");
   };
 
-  const deleteDva = (dva) => {
-    setIsDeleteLoading(true);
-
-    toast.info("Coming soon!");
+  const copyDva = () => {
+    copyToClipboard(
+      `Bank: ${dva.bankName}\nAccount Name: ${dva.accountName}\nAccount Number: ${dva.accountNumber}`,
+      "DVA copied!"
+    );
   };
 
   const handleClose = () => {
@@ -32,7 +32,7 @@ const EditDva = ({ dva, onHide }) => {
     <Modal scrollable show={show} onHide={handleClose}>
       <Modal.Header className="py-2" closeButton>
         <Modal.Title className="h5">
-          {truncate(capitalize(dva.name), 20)}
+          {capitalize(dva.accountName.replaceAll("-", " "))}
         </Modal.Title>
       </Modal.Header>
 
@@ -50,7 +50,7 @@ const EditDva = ({ dva, onHide }) => {
                   className="form-control cus-form-control rounded-2"
                   id="bankName"
                   placeholder="bank name"
-                  value={dva.bankName}
+                  value={capitalize(dva.bankName)}
                 />
               </div>
 
@@ -64,7 +64,7 @@ const EditDva = ({ dva, onHide }) => {
                   className="form-control cus-form-control rounded-2"
                   id="accountName"
                   placeholder="account name"
-                  value={dva.accountName}
+                  value={capitalize(dva.accountName.replaceAll("-", " "))}
                 />
               </div>
 
@@ -81,26 +81,36 @@ const EditDva = ({ dva, onHide }) => {
                   value={dva.accountNumber}
                 />
               </div>
+
+              <div className="mb-3 mt-2">
+                <label className="form-label" htmlFor="phoneNumber">
+                  Phone Number
+                </label>
+                <PhoneInput
+                  id="phoneNumber"
+                  placeholder="e.g., +2348000000000"
+                  value={dva.phoneNumber}
+                  defaultCountry="NG"
+                  international
+                  readOnly
+                  className="form-control cus-form-control rounded-2"
+                />
+              </div>
             </div>
 
             <div className="col-md-12 d-flex justify-content-between my-3">
               <button
                 type="button"
-                disabled
-                onClick={() => deleteDva(dva)}
-                className="btn-dash bg-danger text-white border-0"
+                onClick={() => copyDva(dva)}
+                className="btn-dash bg-success text-white border-0"
               >
-                <CloseSquare size={20} />
-                {isDeleteLoading ? <Loader /> : "Delete"}
+                <Copy size={20} />
+                Copy
               </button>
 
-              <button
-                type="submit"
-                disabled
-                className="btn-dash btn-primary border-0"
-              >
+              <button type="submit" className="btn-dash btn-primary border-0">
                 <TickSquare size={20} />
-                {isLoading ? <Loader /> : "Update Dva"}
+                Update Dva
               </button>
             </div>
           </form>

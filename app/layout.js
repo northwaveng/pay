@@ -5,6 +5,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FireAuthProvider } from "@/app/_components/firebase/fire_auth_context";
 import { Inter } from "next/font/google";
+import 'react-phone-number-input/style.css';
 
 const inter = Inter({ subsets: ["latin"] });
 const baseURL = "https://pay.northwaveng.com/";

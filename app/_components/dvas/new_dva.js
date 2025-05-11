@@ -4,7 +4,13 @@ import { TickSquare } from "iconsax-react";
 import { Modal } from "react-bootstrap";
 import { useState } from "react";
 import Loader from "@/app/_components/loader";
+import PhoneInput from "react-phone-number-input";
 import { toast } from "react-toastify";
+import {
+  createPaystackCustomer,
+  createPaystackDva,
+  getPaystackCustomer,
+} from "@/app/actions/actions";
 import {
   addDoc,
   collection,
@@ -20,39 +26,121 @@ const NewDva = ({ newDva, onHide }) => {
   const [email, setEmail] = useState("");
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
 
   const onAddDva = async (e) => {
     e.preventDefault();
     setIsLoading(true);
 
-    // const collRef = collection(db, "dvas");
-    // const dvaDoc = {
-    //   id: null,
-    //   bankName: bankName.toLowerCase(),
-    //   accountName: accountName.toLowerCase(),
-    //   accountNumber: accountNumber,
-    //   createdOn: serverTimestamp(),
-    // };
+    getPaystackCustomer({
+      email: email.toLowerCase(),
+    })
+      .then((res) => {
+        const result = res.data;
 
-    // addDoc(collRef, dvaDoc)
-    //   .then((dva) => {
-    //     updateDoc(doc(db, "dvas", dva.id), { id: dva.id })
-    //       .then(() => {
-    //         handleClose();
-    //         toast.dark("Dva added successfully");
-    //       })
-    //       .catch((e) => {
-    //         toast.error(`Error occured while updating dva ID: ${e.message}`, {
-    //           className: "text-danger",
-    //         });
-    //       });
-    //   })
-    //   .catch((e) => {
-    //     toast.error(`Error occured: ${e.message}`, {
-    //       className: "text-danger",
-    //     });
-    //   })
-    //   .finally(() => setIsLoading(false));
+        if (result === undefined) {
+          toast.info("Creating customer...");
+          newCustomer();
+        } else {
+          toast.info("Creating DVA...");
+          const customerCode = result.customer_code;
+          createDva(customerCode);
+        }
+      })
+      .catch((e) => {
+        toast.error(`Error occured: ${e.message}`, {
+          className: "text-danger",
+        });
+      });
+  };
+
+  const newCustomer = () => {
+    createPaystackCustomer({
+      email: email.toLowerCase(),
+      firstName: firstName.toLowerCase(),
+      lastName: lastName.toLowerCase(),
+      phoneNumber: phoneNumber,
+    })
+      .then((res) => {
+        const result = res.data;
+        if (result === undefined) {
+          const customerCode = result.customer_code;
+          createDva(customerCode);
+        } else {
+          setIsLoading(false);
+          toast.error("Customer could not be created!", {
+            className: "text-danger",
+          });
+        }
+      })
+      .catch((e) => {
+        toast.error(`Error occured when creating customer: ${e.message}`, {
+          className: "text-danger",
+        });
+      });
+  };
+
+  const createDva = (customerCode) => {
+    createPaystackDva({
+      firstName: firstName.toLowerCase(),
+      lastName: lastName.toLowerCase(),
+      customerCode: customerCode,
+      preferredBank: "test-bank",
+    })
+      .then((res) => {
+        const result = res.data;
+        if (result !== undefined) {
+          toast.info("Adding DVA...");
+
+          const bankName_ = result.bank.name.toLowerCase();
+          const accountName_ = result.account_name.toLowerCase();
+          const accountNumber_ = result.account_number.toLowerCase();
+
+          updateDb(bankName_, accountName_, accountNumber_, phoneNumber);
+        } else {
+          setIsLoading(false);
+          toast.error("Could not create DVA", {
+            className: "text-danger",
+          });
+        }
+      })
+      .catch((e) => {
+        toast.error(`Error occured when creating DVA: ${e.message}`, {
+          className: "text-danger",
+        });
+      });
+  };
+
+  const updateDb = (bankName, accountName, accountNumber, phoneNumber) => {
+    const collRef = collection(db, "dvas");
+    const dvaDoc = {
+      id: null,
+      bankName: bankName.toLowerCase(),
+      accountName: accountName.toLowerCase(),
+      accountNumber: accountNumber,
+      phoneNumber: phoneNumber,
+      createdOn: serverTimestamp(),
+    };
+
+    addDoc(collRef, dvaDoc)
+      .then((dva) => {
+        updateDoc(doc(db, "dvas", dva.id), { id: dva.id })
+          .then(() => {
+            handleClose();
+            toast.dark("DVA added successfully");
+          })
+          .catch((e) => {
+            toast.error(`Error occured while updating dva ID: ${e.message}`, {
+              className: "text-danger",
+            });
+          });
+      })
+      .catch((e) => {
+        toast.error(`Error occured: ${e.message}`, {
+          className: "text-danger",
+        });
+      })
+      .finally(() => setIsLoading(false));
   };
 
   const handleClose = () => {
@@ -109,6 +197,22 @@ const NewDva = ({ newDva, onHide }) => {
                   id="lastName"
                   placeholder="Doe"
                   onChange={(e) => setLastName(e.target.value)}
+                />
+              </div>
+
+              <div className="mb-3 mt-2">
+                <label className="form-label" htmlFor="phoneNumber">
+                  Phone Number
+                </label>
+                <PhoneInput
+                  id="phoneNumber"
+                  placeholder="e.g., +2348000000000"
+                  value={phoneNumber}
+                  onChange={setPhoneNumber}
+                  defaultCountry="NG"
+                  international
+                  required
+                  className="form-control cus-form-control rounded-2"
                 />
               </div>
             </div>

@@ -27,7 +27,6 @@ const PaymentStatus = () => {
         ref: ref,
       })
         .then((res) => {
-          console.log(res);
           if (res.status === true && res.data.status === "success") {
             setIsSuccess(true);
             onAddPayment(ref, res.data.metadata);

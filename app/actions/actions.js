@@ -56,3 +56,70 @@ export const verifyPaystackTransaction = async ({ ref }) => {
     return error;
   }
 };
+
+export const getPaystackCustomer = async ({ email }) => {
+  const options = {
+    method: "GET",
+    headers: getCommonHeaders(),
+  };
+
+  try {
+    const response = await fetch(`${url}/customer/${email}`, options);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const createPaystackCustomer = async ({
+  email,
+  firstName,
+  lastName,
+  phoneNumber,
+}) => {
+  const options = {
+    method: "GET",
+    headers: getCommonHeaders(),
+    body: JSON.stringify({
+      email: email,
+      first_name: firstName,
+      last_name: lastName,
+      phone: phoneNumber,
+    }),
+  };
+
+  try {
+    const response = await fetch(`${url}/customer`, options);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const createPaystackDva = async ({
+  firstName,
+  lastName,
+  customerCode,
+  preferredBank,
+}) => {
+  const options = {
+    method: "POST",
+    headers: getCommonHeaders(),
+    body: JSON.stringify({
+      first_name: firstName,
+      last_name: lastName,
+      customer: customerCode,
+      preferred_bank: preferredBank,
+    }),
+  };
+
+  try {
+    const response = await fetch(`${url}/dedicated_account`, options);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
