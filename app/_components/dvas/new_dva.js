@@ -85,7 +85,8 @@ const NewDva = ({ newDva, onHide }) => {
       firstName: firstName.toLowerCase(),
       lastName: lastName.toLowerCase(),
       customerCode: customerCode,
-      preferredBank: "test-bank",
+      // preferredBank: "test-bank",
+      preferredBank: "titan-paystack",
     })
       .then((res) => {
         const result = res.data;
