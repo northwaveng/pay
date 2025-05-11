@@ -35,6 +35,7 @@ const InsurancePage = () => {
   if (!authUser) return <NeedAuth />;
 
   if (user && !user.isSupervisor) return <NeedAccess />;
+  
   return (
     <>
       <Siderbar />

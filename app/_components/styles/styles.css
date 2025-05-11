@@ -479,6 +479,17 @@ input[type="file"]::file-selector-button {
   background: white;
 }
 
+.dash-body-normal {
+  margin-top: 6.5rem;
+}
+
+.dash-header-normal {
+  position: fixed;
+  top: 0;
+  right: 0;
+  background: white;
+}
+
 .search-dash {
   display: flex;
   width: 240px;
