@@ -132,25 +132,59 @@ export const validatePaystackCustomer = async ({
   }
 };
 
-export const createPaystackDva = async ({
+// export const createPaystackDva = async ({
+//   firstName,
+//   lastName,
+//   customerCode,
+//   preferredBank,
+// }) => {
+//   const options = {
+//     method: "POST",
+//     headers: getCommonHeaders(),
+//     body: JSON.stringify({
+//       first_name: firstName,
+//       last_name: lastName,
+//       customer: customerCode,
+//       preferred_bank: preferredBank,
+//     }),
+//   };
+
+//   try {
+//     const response = await fetch(`${url}/dedicated_account`, options);
+//     const data = await response.json();
+//     return data;
+//   } catch (error) {
+//     return error;
+//   }
+// };
+
+export const createPaystackAssignDva = async ({
+  email,
   firstName,
   lastName,
   customerCode,
   preferredBank,
+  phoneNumber,
 }) => {
   const options = {
     method: "POST",
     headers: getCommonHeaders(),
     body: JSON.stringify({
+      email: email,
       first_name: firstName,
       last_name: lastName,
       customer: customerCode,
       preferred_bank: preferredBank,
+      country: "NG",
+      phone: phoneNumber,
+      account_number: paystackAccountNumber,
+      bvn: paystackBvn,
+      bank_code: paystackBankCode,
     }),
   };
 
   try {
-    const response = await fetch(`${url}/dedicated_account`, options);
+    const response = await fetch(`${url}/dedicated_account/assign`, options);
     const data = await response.json();
     return data;
   } catch (error) {

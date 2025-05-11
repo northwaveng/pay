@@ -7,6 +7,7 @@ import Loader from "@/app/_components/loader";
 import PhoneInput from "react-phone-number-input";
 import { toast } from "react-toastify";
 import {
+  createPaystackAssignDva,
   createPaystackCustomer,
   createPaystackDva,
   getPaystackCustomer,
@@ -45,7 +46,7 @@ const NewDva = ({ newDva, onHide }) => {
         } else {
           toast.info("Validating Customer...");
           const customerCode = result.customer_code;
-          validateCustomer(customerCode);
+          createDva(customerCode);
         }
       })
       .catch((e) => {
@@ -69,7 +70,7 @@ const NewDva = ({ newDva, onHide }) => {
         if (result !== undefined) {
           toast.info("Validating Customer...");
           const customerCode = result.customer_code;
-          validateCustomer(customerCode);
+          createDva(customerCode);
         } else {
           setIsLoading(false);
           toast.error("Customer could not be created!", {
@@ -119,12 +120,14 @@ const NewDva = ({ newDva, onHide }) => {
   };
 
   const createDva = (customerCode) => {
-    createPaystackDva({
+    createPaystackAssignDva({
+      email: email.toLowerCase(),
       firstName: firstName.toLowerCase(),
       lastName: lastName.toLowerCase(),
       customerCode: customerCode,
       // preferredBank: "test-bank",
       preferredBank: "titan-paystack",
+      phoneNumber: phoneNumber,
     })
       .then((res) => {
         const result = res.data;
@@ -137,11 +140,15 @@ const NewDva = ({ newDva, onHide }) => {
 
           updateDb(bankName_, accountName_, accountNumber_, phoneNumber);
         } else {
-          setIsLoading(false);
-          console.log(res);
-          toast.error("Could not create DVA", {
-            className: "text-danger",
-          });
+          const status = res.status;
+          if (status) {
+            toast.info(res.message);
+          } else {
+            setIsLoading(false);
+            toast.error("Could not create DVA", {
+              className: "text-danger",
+            });
+          }
         }
       })
       .catch((e) => {
