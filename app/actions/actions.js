@@ -2,6 +2,9 @@
 
 const secretKey = process.env.PAYSTACK_LIVE_SECRET_KEY;
 const url = process.env.PAYSTACK_PAYMENT_URL;
+const paystackAccountNumber = process.env.PAYSTACK_ACCOUNT_NUMBER;
+const paystackBvn = process.env.PAYSTACK_BVN;
+const paystackBankCode = process.env.PAYSTACK_BANK_CODE;
 
 const getCommonHeaders = () => ({
   Authorization: `Bearer ${secretKey}`,
@@ -79,7 +82,7 @@ export const createPaystackCustomer = async ({
   phoneNumber,
 }) => {
   const options = {
-    method: "GET",
+    method: "POST",
     headers: getCommonHeaders(),
     body: JSON.stringify({
       email: email,
@@ -91,6 +94,37 @@ export const createPaystackCustomer = async ({
 
   try {
     const response = await fetch(`${url}/customer`, options);
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    return error;
+  }
+};
+
+export const validatePaystackCustomer = async ({
+  firstName,
+  lastName,
+  customerCode,
+}) => {
+  const options = {
+    method: "POST",
+    headers: getCommonHeaders(),
+    body: JSON.stringify({
+      country: "NG",
+      type: "bank_account",
+      account_number: paystackAccountNumber,
+      bvn: paystackBvn,
+      bank_code: paystackBankCode,
+      first_name: firstName,
+      last_name: lastName,
+    }),
+  };
+
+  try {
+    const response = await fetch(
+      `${url}/customer/${customerCode}/identification`,
+      options
+    );
     const data = await response.json();
     return data;
   } catch (error) {

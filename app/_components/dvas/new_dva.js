@@ -10,6 +10,7 @@ import {
   createPaystackCustomer,
   createPaystackDva,
   getPaystackCustomer,
+  validatePaystackCustomer,
 } from "@/app/actions/actions";
 import {
   addDoc,
@@ -42,12 +43,13 @@ const NewDva = ({ newDva, onHide }) => {
           toast.info("Creating customer...");
           newCustomer();
         } else {
-          toast.info("Creating DVA...");
+          toast.info("Validating Customer...");
           const customerCode = result.customer_code;
-          createDva(customerCode);
+          validateCustomer(customerCode);
         }
       })
       .catch((e) => {
+        setIsLoading(false);
         toast.error(`Error occured: ${e.message}`, {
           className: "text-danger",
         });
@@ -63,9 +65,11 @@ const NewDva = ({ newDva, onHide }) => {
     })
       .then((res) => {
         const result = res.data;
-        if (result === undefined) {
+
+        if (result !== undefined) {
+          toast.info("Validating Customer...");
           const customerCode = result.customer_code;
-          createDva(customerCode);
+          validateCustomer(customerCode);
         } else {
           setIsLoading(false);
           toast.error("Customer could not be created!", {
@@ -74,7 +78,41 @@ const NewDva = ({ newDva, onHide }) => {
         }
       })
       .catch((e) => {
+        setIsLoading(false);
         toast.error(`Error occured when creating customer: ${e.message}`, {
+          className: "text-danger",
+        });
+      });
+  };
+
+  const validateCustomer = (customerCode) => {
+    validatePaystackCustomer({
+      firstName: firstName.toLowerCase(),
+      lastName: lastName.toLowerCase(),
+      customerCode: customerCode,
+    })
+      .then((res) => {
+        const result = res.data;
+
+        if (result !== undefined) {
+          toast.info("Creating DVA...");
+          createDva(customerCode);
+        } else {
+          setIsLoading(false);
+          const status = res.status;
+
+          if (status) {
+            toast.info(res.message);
+          } else {
+            toast.error("Could not validate customer", {
+              className: "text-danger",
+            });
+          }
+        }
+      })
+      .catch((e) => {
+        setIsLoading(false);
+        toast.error(`Error occured when creating DVA: ${e.message}`, {
           className: "text-danger",
         });
       });
@@ -100,12 +138,14 @@ const NewDva = ({ newDva, onHide }) => {
           updateDb(bankName_, accountName_, accountNumber_, phoneNumber);
         } else {
           setIsLoading(false);
+          console.log(res);
           toast.error("Could not create DVA", {
             className: "text-danger",
           });
         }
       })
       .catch((e) => {
+        setIsLoading(false);
         toast.error(`Error occured when creating DVA: ${e.message}`, {
           className: "text-danger",
         });
